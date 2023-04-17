@@ -4,44 +4,44 @@ namespace EisenhowerMain {
 public class TodoItem
     {
         // Attributes
-        private string Title;
-        private DateTime Deadline;
-        private bool IsDone;
+        private string _title;
+        private DateTime _deadline;
+        private bool _isDone;
         
         //Constructor
-        public TodoItem(string Title, DateTime Deadline, bool IsDone)
+        public TodoItem(string title, DateTime deadline, bool isDone)
         {
-            this.Title = Title;
-            this.Deadline = Deadline;
-            this.IsDone = IsDone;
+            _title = title;
+            _deadline = deadline;
+            _isDone = isDone;
         }
 
         //Instance Methods
-        public string GetTitle()
+        public string Get_title()
         {
-            return Title;
+            return _title;
         }
 
-        public DateTime GetDeadLine()
+        public DateTime Get_deadline()
         {
-            return Deadline;
+            return _deadline;
         }
 
         public void Mark()
         {
-            IsDone = true;
+            _isDone = true;
         }
 
         public void Unmark()
         {
-            IsDone = false;
+            _isDone = false;
         }
 
         public override string ToString()
         {
-            string doneStatus = IsDone ? "[x]" : "[ ]";
-            string formatedDeadline = Deadline.ToString("d-M");
-            return $"{doneStatus} {formatedDeadline} {Title}";
+            string doneStatus = _isDone ? "[x]" : "[ ]";
+            string formatedDeadline = _deadline.ToString("d-M");
+            return $"{doneStatus} {formatedDeadline} {_title}";
         }
     }
 }
