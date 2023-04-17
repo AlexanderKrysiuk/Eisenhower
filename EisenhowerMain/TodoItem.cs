@@ -4,8 +4,8 @@ namespace EisenhowerMain {
 public class TodoItem
     {
         // Attributes
-        private string _title;
-        private DateTime _deadline;
+        private readonly string _title;
+        private readonly DateTime _deadline;
         private bool _isDone;
         
         //Constructor
@@ -40,8 +40,8 @@ public class TodoItem
         public override string ToString()
         {
             string doneStatus = _isDone ? "[x]" : "[ ]";
-            string formatedDeadline = _deadline.ToString("d-M");
-            return $"{doneStatus} {formatedDeadline} {_title}";
+            string formattedDeadline = _deadline.ToString("d-M");
+            return $"{doneStatus} {formattedDeadline} {_title}";
         }
     }
 }
