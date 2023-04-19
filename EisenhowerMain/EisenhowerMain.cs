@@ -3,10 +3,10 @@
 namespace EisenhowerCore
 {
     public class EisenhowerMain
-    {  
-        static public void Main(String[] args) 
-        { 
-            Console.WriteLine("Hello Codecool!"); 
+    {
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("Hello Codecool!");
         }
     }
 }
