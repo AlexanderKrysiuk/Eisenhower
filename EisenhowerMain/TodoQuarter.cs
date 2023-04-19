@@ -1,52 +1,50 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using EisenhowerMain;
 
 namespace EisenhowerMain { 
 
     public class TodoQuarter
     {
         //Instance Attributes
-        private List<TodoItem> ToDoItems;
+        private readonly List<TodoItem> _todoItems;
         
         //Constructor
         public TodoQuarter()
         {
-            ToDoItems = new List<TodoItem>();
+            _todoItems = new List<TodoItem>();
         }
         
         //Instance Methods
         public void AddItem(string title, DateTime deadline)
         {
             TodoItem item = new TodoItem(title, deadline);
-            ToDoItems.Add(item);
+            _todoItems.Add(item);
         }
 
         public void RemoveItem(int index)
         {
-            ToDoItems.RemoveAt(index);
+            _todoItems.RemoveAt(index);
         }
 
         public void ArchiveItems()
         {
-            ToDoItems.RemoveAll(item => item.isDone);
+            _todoItems.RemoveAll(item => item.isDone);
         }
 
         public TodoItem GetItem(int index)
         {
-            return ToDoItems[index];
+            return _todoItems[index];
         }
 
         public List<TodoItem> GetItems()
         {
-            return ToDoItems;
+            return _todoItems;
         }
 
         public override string ToString()
         {
             string result = "";
-            foreach (TodoItem item in ToDoItems)
+            foreach (TodoItem item in _todoItems)
             {
                 result += item.ToString();
             }
