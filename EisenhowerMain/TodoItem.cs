@@ -6,14 +6,14 @@ public class TodoItem
         // Attributes
         private readonly string _title;
         private readonly DateTime _deadline;
-        private bool _isDone;
+        public bool _isDone;
         
         //Constructor
-        public TodoItem(string title, DateTime deadline, bool isDone)
+        public TodoItem(string title, DateTime deadline)
         {
             _title = title;
             _deadline = deadline;
-            _isDone = isDone;
+            _isDone = false;
         }
 
         //Instance Methods
