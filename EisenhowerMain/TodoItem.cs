@@ -6,14 +6,14 @@ public class TodoItem
         // Attributes
         private readonly string _title;
         private readonly DateTime _deadline;
-        public bool _isDone;
+        public bool isDone;
         
         //Constructor
         public TodoItem(string title, DateTime deadline)
         {
             _title = title;
             _deadline = deadline;
-            _isDone = false;
+            isDone = false;
         }
 
         //Instance Methods
@@ -29,17 +29,17 @@ public class TodoItem
 
         public void Mark()
         {
-            _isDone = true;
+            isDone = true;
         }
 
         public void Unmark()
         {
-            _isDone = false;
+            isDone = false;
         }
 
         public override string ToString()
         {
-            string doneStatus = _isDone ? "[x]" : "[ ]";
+            string doneStatus = isDone ? "[x]" : "[ ]";
             string formattedDeadline = _deadline.ToString("d-M");
             return $"{doneStatus} {formattedDeadline} {_title}";
         }
