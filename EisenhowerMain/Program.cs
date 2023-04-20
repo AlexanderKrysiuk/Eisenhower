@@ -11,7 +11,6 @@ namespace EisenhowerMain
         public readonly Display Display = new Display();
 
         public Input Input = new Input();
-        //public TodoQuarter todoQuarter = new TodoQuarter();
 
 
         public void Main()
