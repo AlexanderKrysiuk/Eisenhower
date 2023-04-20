@@ -5,56 +5,54 @@ namespace EisenhowerMain
 {
     public class TodoQuarter
     {
-        public List<TodoItem> TodoItems { get; set; } = new List<TodoItem>();
+        //Instance Attributes
+        private readonly List<TodoItem> _toDoItems;
 
-
-        public List<TodoItem> AddItem(string title, DateTime deadline)
+        //Constructor
+        public TodoQuarter()
         {
-            TodoItems.Add(new TodoItem(title, deadline) { Title = title, Deadline = deadline });
-            return TodoItems;
+            _toDoItems = new List<TodoItem>();
+        }
+
+        //Instance Methods
+        public void AddItem(string title, DateTime deadline)
+        {
+            var item = new TodoItem(title, deadline, true);
+            _toDoItems.Add(item);
         }
 
 
         public void RemoveItem(int index)
         {
-            TodoItems.RemoveAt(index);
+            _toDoItems.RemoveAt(index);
         }
 
 
-        public List<TodoItem> ArchiveItems()
+        public void ArchiveItems()
         {
-            for (var i = 0; i < TodoItems.Count; i++)
-                if (TodoItems[i].IsDone == true)
-                    TodoItems.RemoveAt(i);
-            return TodoItems;
+            _toDoItems.RemoveAll(item => item.IsDone);
         }
 
 
         public TodoItem GetItem(int index)
         {
-            return TodoItems[index];
+            return _toDoItems[index];
         }
 
 
         public List<TodoItem> GetItems()
         {
-            return TodoItems;
+            return _toDoItems;
         }
 
 
         public override string ToString()
         {
-            var quartString = "";
+            var result = "";
+            foreach (var item in _toDoItems) result += item.ToString();
 
 
-            for (var i = 0; i < TodoItems.Count; i++)
-            {
-                TodoItem todoItem = TodoItems[i];
-                quartString += string.Format("{0}. {1} \n", i + 1, todoItem.ToString());
-            }
-
-            return quartString;
+            return result.TrimEnd();
         }
     }
 }
-

@@ -4,54 +4,52 @@ namespace EisenhowerMain
 {
     public class TodoItem
     {
-        public string Title { get; set; }
-        public DateTime Deadline { get; set; }
-        public bool IsDone { get; set; }
+        private readonly DateTime _deadline;
 
+        public bool IsDone;
 
-        public TodoItem(string title, DateTime deadline)
+        // Attributes
+        private readonly string _title;
+
+        //Constructor
+        public TodoItem(string title, DateTime deadline, bool isDone)
         {
-            this.Title = title;
-            this.Deadline = deadline;
-            this.IsDone = false;
+            _title = title;
+            _deadline = deadline;
+            IsDone = isDone;
         }
 
 
-        string GetTitle()
+        //Instance Methods
+        public string GetTitle()
         {
-            return this.Title;
+            return _title;
         }
 
 
-        DateTime GetDeadline()
+        public DateTime GetDeadLine()
         {
-            return this.Deadline;
+            return _deadline;
         }
 
 
-        public bool Mark()
+        public void Mark()
         {
-            return this.IsDone = true;
+            IsDone = true;
         }
 
 
-        public bool Unmark()
+        public void Unmark()
         {
-            return this.IsDone = false;
+            IsDone = false;
         }
 
 
-        // to override
         public override string ToString()
         {
-            String tdTitle = GetTitle();
-            DateTime tdDeadline = GetDeadline();
-            if (IsDone == false)
-            {
-                return string.Format("[ ] {0} {1}", tdDeadline.ToString("dd/MM"), tdTitle);
-            }
-            else
-                return string.Format("[X] {0} {1}", tdDeadline.ToString("dd/MM"), tdTitle);
+            var doneStatus = IsDone ? "[x]" : "[ ]";
+            var formatedDeadline = _deadline.ToString("d-M");
+            return $"{doneStatus} {formatedDeadline} {_title}";
         }
     }
 }

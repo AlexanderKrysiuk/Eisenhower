@@ -7,8 +7,8 @@ namespace EisenhowerMain
 {
     class Program
     {
-        public TodoMatrix TodoMatrix = new TodoMatrix();
-        public Display Display = new Display();
+        public readonly TodoMatrix TodoMatrix = new TodoMatrix();
+        public readonly Display Display = new Display();
 
         public Input Input = new Input();
         //public TodoQuarter todoQuarter = new TodoQuarter();
@@ -24,7 +24,7 @@ namespace EisenhowerMain
                 string userInput = Input.UserInputStartMenu();
                 if (userInput == "9")
                 {
-                    System.Environment.Exit(1);
+                    Environment.Exit(1);
                 }
                 else
                 {
@@ -50,7 +50,7 @@ namespace EisenhowerMain
                         Console.WriteLine("deadline (DD/MM/YYYY): ");
                         DateTime deadline = Input.NewTodoDeadline();
                         Console.WriteLine("is it important? (y/n): ");
-                        string yesOrNo = Input.userInputYesOrNo();
+                        string yesOrNo = Input.UserInputYesOrNo();
                         if (yesOrNo == "y")
                         {
                             TodoMatrix.AddItem(title, deadline, true);
@@ -64,7 +64,7 @@ namespace EisenhowerMain
                     {
                         if (userInput == "4")
                         {
-                            Display.displayQuarterInformation4();
+                            Display.DisplayQuarterInformation4();
                             TodoQuarter quarterNotImportantNotUrgent =
                                 TodoMatrix.GetQuarter(TodoMatrix.QuarterType.NotImportantNotUrgent);
                             quarterNotImportantNotUrgent.ToString();
@@ -77,7 +77,7 @@ namespace EisenhowerMain
 
                             if (userInputforQuarter == "4")
                             {
-                                Display.displayChooseTodo();
+                                Display.DisplayChooseTodo();
                                 int index = Input.ChooseTodoByIndex();
                                 TodoItem todo = quarterNotImportantNotUrgent.GetItem(index);
                                 todo.Unmark();
@@ -85,7 +85,7 @@ namespace EisenhowerMain
 
                             if (userInputforQuarter == "3")
                             {
-                                Display.displayChooseTodo();
+                                Display.DisplayChooseTodo();
                                 int index = Input.ChooseTodoByIndex();
                                 TodoItem todo = quarterNotImportantNotUrgent.GetItem(index);
                                 todo.Mark();
@@ -93,7 +93,7 @@ namespace EisenhowerMain
 
                             if (userInputforQuarter == "2")
                             {
-                                Display.displayChooseTodo();
+                                Display.DisplayChooseTodo();
                                 int index = Input.ChooseTodoByIndex();
                                 quarterNotImportantNotUrgent.RemoveItem(index);
                             }
@@ -105,7 +105,7 @@ namespace EisenhowerMain
                                 Console.WriteLine("deadline (DD/MM/YYYY): ");
                                 DateTime deadline = Input.NewTodoDeadline();
                                 Console.WriteLine("is it important? (y/n): ");
-                                string yesOrNo = Input.userInputYesOrNo();
+                                string yesOrNo = Input.UserInputYesOrNo();
                                 if (yesOrNo == "y")
                                 {
                                     TodoMatrix.AddItem(title, deadline, true);
@@ -119,7 +119,7 @@ namespace EisenhowerMain
 
                         if (userInput == "3")
                         {
-                            Display.displayQuarterInformation3();
+                            Display.DisplayQuarterInformation3();
                             TodoQuarter quarterNotImportantUrgent =
                                 TodoMatrix.GetQuarter(TodoMatrix.QuarterType.NotImportantUrgent);
                             quarterNotImportantUrgent.ToString();
@@ -132,7 +132,7 @@ namespace EisenhowerMain
 
                             if (userInputforQuarter == "4")
                             {
-                                Display.displayChooseTodo();
+                                Display.DisplayChooseTodo();
                                 int index = Input.ChooseTodoByIndex();
                                 TodoItem todo = quarterNotImportantUrgent.GetItem(index);
                                 todo.Unmark();
@@ -140,7 +140,7 @@ namespace EisenhowerMain
 
                             if (userInputforQuarter == "3")
                             {
-                                Display.displayChooseTodo();
+                                Display.DisplayChooseTodo();
                                 int index = Input.ChooseTodoByIndex();
                                 TodoItem todo = quarterNotImportantUrgent.GetItem(index);
                                 todo.Mark();
@@ -148,7 +148,7 @@ namespace EisenhowerMain
 
                             if (userInputforQuarter == "2")
                             {
-                                Display.displayChooseTodo();
+                                Display.DisplayChooseTodo();
                                 int index = Input.ChooseTodoByIndex();
                                 quarterNotImportantUrgent.RemoveItem(index);
                             }
@@ -160,7 +160,7 @@ namespace EisenhowerMain
                                 Console.WriteLine("deadline (DD/MM/YYYY): ");
                                 DateTime deadline = Input.NewTodoDeadline();
                                 Console.WriteLine("is it important? (y/n): ");
-                                string yesOrNo = Input.userInputYesOrNo();
+                                string yesOrNo = Input.UserInputYesOrNo();
                                 if (yesOrNo == "y")
                                 {
                                     TodoMatrix.AddItem(title, deadline, true);
@@ -174,7 +174,7 @@ namespace EisenhowerMain
 
                         if (userInput == "2")
                         {
-                            Display.displayQuarterInformation2();
+                            Display.DisplayQuarterInformation2();
                             TodoQuarter quarterImportantNotUrgent =
                                 TodoMatrix.GetQuarter(TodoMatrix.QuarterType.ImportantNotUrgent);
                             quarterImportantNotUrgent.ToString();
@@ -187,7 +187,7 @@ namespace EisenhowerMain
 
                             if (userInputforQuarter == "4")
                             {
-                                Display.displayChooseTodo();
+                                Display.DisplayChooseTodo();
                                 int index = Input.ChooseTodoByIndex();
                                 TodoItem todo = quarterImportantNotUrgent.GetItem(index);
                                 todo.Unmark();
@@ -195,7 +195,7 @@ namespace EisenhowerMain
 
                             if (userInputforQuarter == "3")
                             {
-                                Display.displayChooseTodo();
+                                Display.DisplayChooseTodo();
                                 int index = Input.ChooseTodoByIndex();
                                 TodoItem todo = quarterImportantNotUrgent.GetItem(index);
                                 todo.Mark();
@@ -203,7 +203,7 @@ namespace EisenhowerMain
 
                             if (userInputforQuarter == "2")
                             {
-                                Display.displayChooseTodo();
+                                Display.DisplayChooseTodo();
                                 int index = Input.ChooseTodoByIndex();
                                 quarterImportantNotUrgent.RemoveItem(index);
                             }
@@ -215,7 +215,7 @@ namespace EisenhowerMain
                                 Console.WriteLine("deadline (DD/MM/YYYY): ");
                                 DateTime deadline = Input.NewTodoDeadline();
                                 Console.WriteLine("is it important? (y/n): ");
-                                string yesOrNo = Input.userInputYesOrNo();
+                                string yesOrNo = Input.UserInputYesOrNo();
                                 if (yesOrNo == "y")
                                 {
                                     TodoMatrix.AddItem(title, deadline, true);
@@ -229,7 +229,7 @@ namespace EisenhowerMain
 
                         if (userInput == "1")
                         {
-                            Display.displayQuarterInformation1();
+                            Display.DisplayQuarterInformation1();
                             TodoQuarter quarterImportantUrgent =
                                 TodoMatrix.GetQuarter(TodoMatrix.QuarterType.ImportantUrgent);
                             quarterImportantUrgent.ToString();
@@ -242,7 +242,7 @@ namespace EisenhowerMain
 
                             if (userInputforQuarter == "4")
                             {
-                                Display.displayChooseTodo();
+                                Display.DisplayChooseTodo();
                                 int index = Input.ChooseTodoByIndex();
                                 TodoItem todo = quarterImportantUrgent.GetItem(index);
                                 todo.Unmark();
@@ -250,7 +250,7 @@ namespace EisenhowerMain
 
                             if (userInputforQuarter == "3")
                             {
-                                Display.displayChooseTodo();
+                                Display.DisplayChooseTodo();
                                 int index = Input.ChooseTodoByIndex();
                                 TodoItem todo = quarterImportantUrgent.GetItem(index);
                                 todo.Mark();
@@ -258,7 +258,7 @@ namespace EisenhowerMain
 
                             if (userInputforQuarter == "2")
                             {
-                                Display.displayChooseTodo();
+                                Display.DisplayChooseTodo();
                                 int index = Input.ChooseTodoByIndex();
                                 quarterImportantUrgent.RemoveItem(index);
                             }
@@ -270,7 +270,7 @@ namespace EisenhowerMain
                                 Console.WriteLine("deadline (DD/MM/YYYY): ");
                                 DateTime deadline = Input.NewTodoDeadline();
                                 Console.WriteLine("is it important? (y/n): ");
-                                string yesOrNo = Input.userInputYesOrNo();
+                                string yesOrNo = Input.UserInputYesOrNo();
                                 if (yesOrNo == "y")
                                 {
                                     TodoMatrix.AddItem(title, deadline, true);

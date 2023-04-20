@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace EisenhowerCore
+﻿namespace EisenhowerMain
 {
     public class EisenhowerMain
     {
-        public static void Main(string[] args)
+        private static void Main()
         {
-            Console.WriteLine("Hello Codecool!");
+            Program program = new Program();
+            program.Main();
         }
     }
 }
