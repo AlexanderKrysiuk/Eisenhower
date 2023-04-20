@@ -48,8 +48,8 @@ namespace EisenhowerMain
         public override string ToString()
         {
             var doneStatus = IsDone ? "[x]" : "[ ]";
-            var formatedDeadline = _deadline.ToString("d-M");
-            return $"{doneStatus} {formatedDeadline} {_title}";
+            var formattedDeadline = _deadline.ToString("d-M");
+            return $"{doneStatus} {formattedDeadline} {_title}";
         }
     }
 }

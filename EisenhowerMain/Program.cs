@@ -34,7 +34,7 @@ namespace EisenhowerMain
 
                     if (userInput == "7")
                     {
-                        TodoMatrix.LoadItems();
+                        TodoMatrix.AddItem();
                     }
 
                     if (userInput == "6")

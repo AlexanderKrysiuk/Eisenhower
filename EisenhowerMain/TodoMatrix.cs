@@ -61,7 +61,7 @@ namespace EisenhowerMain
         {
             foreach (var entry in _todoQuarters)
             foreach (var item in entry.Value.GetItems())
-                if (item.IsDone == true)
+                if (item.IsDone)
                     entry.Value.GetItems().Remove(item);
         }
 
@@ -112,6 +112,11 @@ namespace EisenhowerMain
         }
 
         public void SaveItems()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddItem()
         {
             throw new NotImplementedException();
         }
