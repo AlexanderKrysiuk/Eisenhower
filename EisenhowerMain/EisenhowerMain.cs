@@ -1,6 +1,6 @@
 ﻿namespace EisenhowerMain
 {
-    public class EisenhowerMain
+    public static class EisenhowerMain
     {
         private static void Main()
         {

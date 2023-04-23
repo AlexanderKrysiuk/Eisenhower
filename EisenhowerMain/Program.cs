@@ -1,26 +1,24 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 
 namespace EisenhowerMain
 {
     class Program
     {
-        public readonly TodoMatrix TodoMatrix = new TodoMatrix();
-        public readonly Display Display = new Display();
+        private readonly TodoMatrix _todoMatrix = new TodoMatrix();
+        private readonly Display _display = new Display();
 
-        public Input Input = new Input();
+        private readonly Input _input = new Input();
 
 
         public void Main()
         {
             while (true)
             {
-                Display.ClearScreen();
-                Display.DisplayTodos(TodoMatrix);
-                Display.DisplayStartMenu();
-                string userInput = Input.UserInputStartMenu();
+                _display.ClearScreen();
+                _display.DisplayTodos(_todoMatrix);
+                _display.DisplayStartMenu();
+                string userInput = _input.UserInputStartMenu();
                 if (userInput == "9")
                 {
                     Environment.Exit(1);
@@ -29,260 +27,261 @@ namespace EisenhowerMain
                 {
                     if (userInput == "8")
                     {
-                        TodoMatrix.SaveItems();
+                        _todoMatrix.SaveItems();
                     }
 
                     if (userInput == "7")
                     {
-                        TodoMatrix.AddItem();
+                        _todoMatrix.AddItem();
                     }
 
                     if (userInput == "6")
                     {
-                        TodoMatrix.ArchiveItems();
+                        _todoMatrix.ArchiveItems();
                     }
 
                     if (userInput == "5")
                     {
                         Console.WriteLine("title of your todo: ");
-                        string title = Input.NewTodoTitle();
+                        string title = _input.NewTodoTitle();
                         Console.WriteLine("deadline (DD/MM/YYYY): ");
-                        DateTime deadline = Input.NewTodoDeadline();
+                        DateTime deadline = _input.NewTodoDeadline();
                         Console.WriteLine("is it important? (y/n): ");
-                        string yesOrNo = Input.UserInputYesOrNo();
+                        string yesOrNo = _input.UserInputYesOrNo();
                         if (yesOrNo == "y")
                         {
-                            TodoMatrix.AddItem(title, deadline, true);
+                            _todoMatrix.AddItem(title, deadline);
                         }
                         else
                         {
-                            TodoMatrix.AddItem(title, deadline, false);
+                            _todoMatrix.AddItem(title, deadline);
                         }
                     }
                     else
                     {
                         if (userInput == "4")
                         {
-                            Display.DisplayQuarterInformation4();
+                            _display.DisplayQuarterInformation4();
                             TodoQuarter quarterNotImportantNotUrgent =
-                                TodoMatrix.GetQuarter(TodoMatrix.QuarterType.NotImportantNotUrgent);
-                            quarterNotImportantNotUrgent.ToString();
-                            Console.Write(quarterNotImportantNotUrgent);
-                            Display.DisplayQuarterMenu();
-                            string userInputforQuarter = Input.UserInputQuarterMenu();
-                            if (userInputforQuarter == "5")
+                                _todoMatrix.GetQuarter(_todoMatrix.AddItem());
+                            var s = quarterNotImportantNotUrgent.ToString();
+                            Console.Write(s);
+                            _display.DisplayQuarterMenu();
+                            string userInputForQuarter = _input.UserInputQuarterMenu();
+                            if (userInputForQuarter == "5")
                             {
                             }
 
-                            if (userInputforQuarter == "4")
+                            if (userInputForQuarter == "4")
                             {
-                                Display.DisplayChooseTodo();
-                                int index = Input.ChooseTodoByIndex();
+                                _display.DisplayChooseTodo();
+                                int index = _input.ChooseTodoByIndex();
                                 TodoItem todo = quarterNotImportantNotUrgent.GetItem(index);
                                 todo.Unmark();
                             }
 
-                            if (userInputforQuarter == "3")
+                            if (userInputForQuarter == "3")
                             {
-                                Display.DisplayChooseTodo();
-                                int index = Input.ChooseTodoByIndex();
+                                _display.DisplayChooseTodo();
+                                int index = _input.ChooseTodoByIndex();
                                 TodoItem todo = quarterNotImportantNotUrgent.GetItem(index);
                                 todo.Mark();
                             }
 
-                            if (userInputforQuarter == "2")
+                            if (userInputForQuarter == "2")
                             {
-                                Display.DisplayChooseTodo();
-                                int index = Input.ChooseTodoByIndex();
+                                _display.DisplayChooseTodo();
+                                int index = _input.ChooseTodoByIndex();
                                 quarterNotImportantNotUrgent.RemoveItem(index);
                             }
 
-                            if (userInputforQuarter == "1")
+                            if (userInputForQuarter == "1")
                             {
                                 Console.WriteLine("title of your todo: ");
-                                string title = Input.NewTodoTitle();
+                                string title = _input.NewTodoTitle();
                                 Console.WriteLine("deadline (DD/MM/YYYY): ");
-                                DateTime deadline = Input.NewTodoDeadline();
+                                DateTime deadline = _input.NewTodoDeadline();
                                 Console.WriteLine("is it important? (y/n): ");
-                                string yesOrNo = Input.UserInputYesOrNo();
+                                string yesOrNo = _input.UserInputYesOrNo();
                                 if (yesOrNo == "y")
                                 {
-                                    TodoMatrix.AddItem(title, deadline, true);
+                                    _todoMatrix.AddItem(title, deadline);
                                 }
                                 else
                                 {
-                                    TodoMatrix.AddItem(title, deadline, false);
+                                    _todoMatrix.AddItem(title, deadline);
                                 }
                             }
                         }
 
                         if (userInput == "3")
                         {
-                            Display.DisplayQuarterInformation3();
+                            _display.DisplayQuarterInformation3();
                             TodoQuarter quarterNotImportantUrgent =
-                                TodoMatrix.GetQuarter(TodoMatrix.QuarterType.NotImportantUrgent);
-                            quarterNotImportantUrgent.ToString();
-                            Console.Write(quarterNotImportantUrgent);
-                            Display.DisplayQuarterMenu();
-                            string userInputforQuarter = Input.UserInputQuarterMenu();
-                            if (userInputforQuarter == "5")
+                                _todoMatrix.GetQuarter(_todoMatrix.AddItem());
+                            var s = quarterNotImportantUrgent.ToString();
+                            Console.Write(s);
+                            _display.DisplayQuarterMenu();
+                            string userInputForQuarter = _input.UserInputQuarterMenu();
+                            if (userInputForQuarter == "5")
                             {
                             }
 
-                            if (userInputforQuarter == "4")
+                            if (userInputForQuarter == "4")
                             {
-                                Display.DisplayChooseTodo();
-                                int index = Input.ChooseTodoByIndex();
+                                _display.DisplayChooseTodo();
+                                int index = _input.ChooseTodoByIndex();
                                 TodoItem todo = quarterNotImportantUrgent.GetItem(index);
                                 todo.Unmark();
                             }
 
-                            if (userInputforQuarter == "3")
+                            if (userInputForQuarter == "3")
                             {
-                                Display.DisplayChooseTodo();
-                                int index = Input.ChooseTodoByIndex();
+                                _display.DisplayChooseTodo();
+                                int index = _input.ChooseTodoByIndex();
                                 TodoItem todo = quarterNotImportantUrgent.GetItem(index);
                                 todo.Mark();
                             }
 
-                            if (userInputforQuarter == "2")
+                            if (userInputForQuarter == "2")
                             {
-                                Display.DisplayChooseTodo();
-                                int index = Input.ChooseTodoByIndex();
+                                _display.DisplayChooseTodo();
+                                int index = _input.ChooseTodoByIndex();
                                 quarterNotImportantUrgent.RemoveItem(index);
                             }
 
-                            if (userInputforQuarter == "1")
+                            if (userInputForQuarter == "1")
                             {
                                 Console.WriteLine("title of your todo: ");
-                                string title = Input.NewTodoTitle();
+                                string title = _input.NewTodoTitle();
                                 Console.WriteLine("deadline (DD/MM/YYYY): ");
-                                DateTime deadline = Input.NewTodoDeadline();
+                                DateTime deadline = _input.NewTodoDeadline();
                                 Console.WriteLine("is it important? (y/n): ");
-                                string yesOrNo = Input.UserInputYesOrNo();
+                                string yesOrNo = _input.UserInputYesOrNo();
                                 if (yesOrNo == "y")
                                 {
-                                    TodoMatrix.AddItem(title, deadline, true);
+                                    _todoMatrix.AddItem(title, deadline);
                                 }
                                 else
                                 {
-                                    TodoMatrix.AddItem(title, deadline, false);
+                                    _todoMatrix.AddItem(title, deadline);
                                 }
                             }
                         }
 
                         if (userInput == "2")
                         {
-                            Display.DisplayQuarterInformation2();
+                            _display.DisplayQuarterInformation2();
                             TodoQuarter quarterImportantNotUrgent =
-                                TodoMatrix.GetQuarter(TodoMatrix.QuarterType.ImportantNotUrgent);
-                            quarterImportantNotUrgent.ToString();
-                            Console.Write(quarterImportantNotUrgent);
-                            Display.DisplayQuarterMenu();
-                            string userInputforQuarter = Input.UserInputQuarterMenu();
-                            if (userInputforQuarter == "5")
+                                _todoMatrix.GetQuarter(_todoMatrix.AddItem());
+                            var s = quarterImportantNotUrgent.ToString();
+                            Console.Write(s);
+                            _display.DisplayQuarterMenu();
+                            string userInputForQuarter = _input.UserInputQuarterMenu();
+                            if (userInputForQuarter == "5")
                             {
                             }
 
-                            if (userInputforQuarter == "4")
+                            if (userInputForQuarter == "4")
                             {
-                                Display.DisplayChooseTodo();
-                                int index = Input.ChooseTodoByIndex();
+                                _display.DisplayChooseTodo();
+                                int index = _input.ChooseTodoByIndex();
                                 TodoItem todo = quarterImportantNotUrgent.GetItem(index);
                                 todo.Unmark();
                             }
 
-                            if (userInputforQuarter == "3")
+                            if (userInputForQuarter == "3")
                             {
-                                Display.DisplayChooseTodo();
-                                int index = Input.ChooseTodoByIndex();
+                                _display.DisplayChooseTodo();
+                                int index = _input.ChooseTodoByIndex();
                                 TodoItem todo = quarterImportantNotUrgent.GetItem(index);
                                 todo.Mark();
                             }
 
-                            if (userInputforQuarter == "2")
+                            if (userInputForQuarter == "2")
                             {
-                                Display.DisplayChooseTodo();
-                                int index = Input.ChooseTodoByIndex();
+                                _display.DisplayChooseTodo();
+                                int index = _input.ChooseTodoByIndex();
                                 quarterImportantNotUrgent.RemoveItem(index);
                             }
 
-                            if (userInputforQuarter == "1")
+                            if (userInputForQuarter == "1")
                             {
                                 Console.WriteLine("title of your todo: ");
-                                string title = Input.NewTodoTitle();
+                                string title = _input.NewTodoTitle();
                                 Console.WriteLine("deadline (DD/MM/YYYY): ");
-                                DateTime deadline = Input.NewTodoDeadline();
+                                DateTime deadline = _input.NewTodoDeadline();
                                 Console.WriteLine("is it important? (y/n): ");
-                                string yesOrNo = Input.UserInputYesOrNo();
+                                string yesOrNo = _input.UserInputYesOrNo();
                                 if (yesOrNo == "y")
                                 {
-                                    TodoMatrix.AddItem(title, deadline, true);
+                                    _todoMatrix.AddItem(title, deadline);
                                 }
                                 else
                                 {
-                                    TodoMatrix.AddItem(title, deadline, false);
+                                    _todoMatrix.AddItem(title, deadline);
                                 }
                             }
                         }
 
                         if (userInput == "1")
                         {
-                            Display.DisplayQuarterInformation1();
+                            _display.DisplayQuarterInformation1();
                             TodoQuarter quarterImportantUrgent =
-                                TodoMatrix.GetQuarter(TodoMatrix.QuarterType.ImportantUrgent);
-                            quarterImportantUrgent.ToString();
-                            Console.Write(quarterImportantUrgent);
-                            Display.DisplayQuarterMenu();
-                            string userInputforQuarter = Input.UserInputQuarterMenu();
-                            if (userInputforQuarter == "5")
+                                _todoMatrix.GetQuarter(_todoMatrix.AddItem());
+                            var s = quarterImportantUrgent.ToString();
+                            Console.Write(s);
+                            _display.DisplayQuarterMenu();
+                            string userInputForQuarter = _input.UserInputQuarterMenu();
+                            if (userInputForQuarter == "5")
                             {
                             }
 
-                            if (userInputforQuarter == "4")
+                            if (userInputForQuarter == "4")
                             {
-                                Display.DisplayChooseTodo();
-                                int index = Input.ChooseTodoByIndex();
+                                _display.DisplayChooseTodo();
+                                int index = _input.ChooseTodoByIndex();
                                 TodoItem todo = quarterImportantUrgent.GetItem(index);
                                 todo.Unmark();
                             }
 
-                            if (userInputforQuarter == "3")
+                            if (userInputForQuarter == "3")
                             {
-                                Display.DisplayChooseTodo();
-                                int index = Input.ChooseTodoByIndex();
+                                _display.DisplayChooseTodo();
+                                int index = _input.ChooseTodoByIndex();
                                 TodoItem todo = quarterImportantUrgent.GetItem(index);
                                 todo.Mark();
                             }
 
-                            if (userInputforQuarter == "2")
+                            if (userInputForQuarter == "2")
                             {
-                                Display.DisplayChooseTodo();
-                                int index = Input.ChooseTodoByIndex();
+                                _display.DisplayChooseTodo();
+                                int index = _input.ChooseTodoByIndex();
                                 quarterImportantUrgent.RemoveItem(index);
                             }
 
-                            if (userInputforQuarter == "1")
+                            if (userInputForQuarter == "1")
                             {
                                 Console.WriteLine("title of your todo: ");
-                                string title = Input.NewTodoTitle();
+                                string title = _input.NewTodoTitle();
                                 Console.WriteLine("deadline (DD/MM/YYYY): ");
-                                DateTime deadline = Input.NewTodoDeadline();
+                                DateTime deadline = _input.NewTodoDeadline();
                                 Console.WriteLine("is it important? (y/n): ");
-                                string yesOrNo = Input.UserInputYesOrNo();
+                                string yesOrNo = _input.UserInputYesOrNo();
                                 if (yesOrNo == "y")
                                 {
-                                    TodoMatrix.AddItem(title, deadline, true);
+                                    _todoMatrix.AddItem(title, deadline);
                                 }
                                 else
                                 {
-                                    TodoMatrix.AddItem(title, deadline, false);
+                                    _todoMatrix.AddItem(title, deadline);
                                 }
                             }
                         }
                     }
                 }
             }
+            // ReSharper disable once FunctionNeverReturns
         }
     }
 }

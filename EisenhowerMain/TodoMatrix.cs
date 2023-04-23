@@ -33,18 +33,18 @@ namespace EisenhowerMain
         }
 
 
-        public void AddItem(string title, DateTime deadline, bool isImportant)
-        {
-            var status = GetStatus(deadline, isImportant);
-            _todoQuarters[status].AddItem(title, deadline);
-        }
-
-
         public void AddItem(string title, DateTime deadline)
         {
             var status = GetStatus(deadline, false);
             _todoQuarters[status].AddItem(title, deadline);
         }
+
+        //
+        // public void AddItem(string title, DateTime deadline)
+        // {
+        //     var status = GetStatus(deadline, false);
+        //     _todoQuarters[status].AddItem(title, deadline);
+        // }
 
 
         public void AddItemsFromFile(string filename)
@@ -116,7 +116,7 @@ namespace EisenhowerMain
             throw new NotImplementedException();
         }
 
-        public void AddItem()
+        public string AddItem()
         {
             throw new NotImplementedException();
         }
