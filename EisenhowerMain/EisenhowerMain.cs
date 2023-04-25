@@ -4,6 +4,7 @@ namespace EisenhowerMain
 {
     public class EisenhowerMain
     {
+        static TodoQuarter Quarter = new TodoQuarter();
         static public void Main(String[] args)
         {
             ShowMenu();
@@ -82,7 +83,12 @@ namespace EisenhowerMain
 
         static void AddItem()
         {
-            //Not Implemented
+            Console.WriteLine("Please provide title of the task:");
+            string title = Console.ReadLine();
+            Console.WriteLine("Please provide deadline data in format yyyy-mm-dd");
+            string datestring = Console.ReadLine();
+            DateTime data = DateTime.Parse(datestring);
+            Quarter.AddItem(title,data);
         }
 
         static void MarkItem()
