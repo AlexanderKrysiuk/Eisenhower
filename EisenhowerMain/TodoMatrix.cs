@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace EisenhowerMain
 {
@@ -63,7 +62,7 @@ namespace EisenhowerMain
             {
                 foreach (TodoItem item in entry.Value.GetItems())
                 {
-                    if (item._isDone == true)
+                    if (item._isDone)
                     {
                         entry.Value.GetItems().Remove(item);
                     }
