@@ -155,7 +155,7 @@ namespace EisenhowerMain
             Console.WriteLine("Please provide deadline data in format yyyy-mm-dd");
             string datestring = Console.ReadLine();
             DateTime data = DateTime.Parse(datestring);
-            Console.WriteLine("Is this item important? parse true or fail");
+            Console.WriteLine("Is this item important? parse true or false");
             bool isImportant = Convert.ToBoolean(Console.ReadLine());
             
             Matrix.AddItem(title,data,isImportant);
