@@ -6,7 +6,7 @@ namespace EisenhowerMain
 
     public class TodoMatrix
     {
-        private Dictionary<string, TodoQuarter> todoQuarters = new Dictionary<string, TodoQuarter>();
+        public Dictionary<string, TodoQuarter> todoQuarters = new Dictionary<string, TodoQuarter>();
 
         public TodoMatrix()
         {

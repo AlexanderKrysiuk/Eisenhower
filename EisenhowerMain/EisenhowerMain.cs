@@ -4,7 +4,7 @@ namespace EisenhowerMain
 {
     public class EisenhowerMain
     {
-        static TodoQuarter Quarter = new TodoQuarter();
+        static TodoMatrix Matrix = new TodoMatrix();
         static public void Main(String[] args)
         {
             ShowMenu();
@@ -50,7 +50,7 @@ namespace EisenhowerMain
                 case "1":
                     ShownToDoItemsByStatus();
                     break;
-                case "2": 
+                case "2":
                     AddItem();
                     break;
                 case "3":
@@ -78,7 +78,78 @@ namespace EisenhowerMain
 
         static void ShownToDoItemsByStatus()
         {
-            //Not Implemented
+            Console.WriteLine("Please provide number of status You would like to see:\n" +
+                              "1 - urgent & important items\n" +
+                              "2 - not urgent & important items\n" +
+                              "3 - urgent & not important items\n" +
+                              "4 - not urgent & not important items");
+            string option = Console.ReadLine();
+            switch (option)
+            {
+                case "1":
+                    ShowUrgentImportant();
+                    break;
+                case "2":
+                    ShowNotUrgentImportant();
+                    break;
+                case "3":
+                    ShowUrgentNotImportant();
+                    break;
+                case "4":
+                    ShowNotUrgentNotImportant();
+                    break;
+                default:
+                    ShownToDoItemsByStatus();
+                    break;
+            }
+
+            void ShowUrgentImportant()
+            {
+                TodoQuarter quater = Matrix.GetQuarter("IU");
+                foreach (var item in quater.GetItems())
+                {
+                    string shownItem = item.ToString();
+                    Console.WriteLine(shownItem);
+                }
+                ShowMenu();
+                ChooseMenuOption();
+            }
+
+            void ShowNotUrgentImportant()
+            {
+                TodoQuarter quater = Matrix.GetQuarter("IN");
+                foreach (var item in quater.GetItems())
+                {
+                    string shownItem = item.ToString();
+                    Console.WriteLine(shownItem);
+                }
+                ShowMenu();
+                ChooseMenuOption();
+            }
+
+            void ShowUrgentNotImportant()
+            {
+                TodoQuarter quater = Matrix.GetQuarter("NU");
+                foreach (var item in quater.GetItems())
+                {
+                    string shownItem = item.ToString();
+                    Console.WriteLine(shownItem);
+                }
+                ShowMenu();
+                ChooseMenuOption();
+            }
+
+            void ShowNotUrgentNotImportant()
+            {
+                TodoQuarter quater = Matrix.GetQuarter("NN");
+                foreach (var item in quater.GetItems())
+                {
+                    string shownItem = item.ToString();
+                    Console.WriteLine(shownItem);
+                }
+                ShowMenu();
+                ChooseMenuOption();
+            }
         }
 
         static void AddItem()
@@ -88,7 +159,13 @@ namespace EisenhowerMain
             Console.WriteLine("Please provide deadline data in format yyyy-mm-dd");
             string datestring = Console.ReadLine();
             DateTime data = DateTime.Parse(datestring);
-            Quarter.AddItem(title,data);
+            Console.WriteLine("Is this item important? parse true or fail");
+            bool isImportant = Convert.ToBoolean(Console.ReadLine());
+            
+            Matrix.AddItem(title,data,isImportant);
+            
+            ShowMenu();
+            ChooseMenuOption();
         }
 
         static void MarkItem()
