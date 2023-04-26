@@ -108,8 +108,7 @@ namespace EisenhowerMain
                 TodoQuarter quater = Matrix.GetQuarter("IU");
                 foreach (var item in quater.GetItems())
                 {
-                    string shownItem = item.ToString();
-                    Console.WriteLine(shownItem);
+                    Console.WriteLine(item.ToString());
                 }
                 ShowMenu();
                 ChooseMenuOption();
@@ -120,8 +119,7 @@ namespace EisenhowerMain
                 TodoQuarter quater = Matrix.GetQuarter("IN");
                 foreach (var item in quater.GetItems())
                 {
-                    string shownItem = item.ToString();
-                    Console.WriteLine(shownItem);
+                    Console.WriteLine(item.ToString());
                 }
                 ShowMenu();
                 ChooseMenuOption();
@@ -132,8 +130,7 @@ namespace EisenhowerMain
                 TodoQuarter quater = Matrix.GetQuarter("NU");
                 foreach (var item in quater.GetItems())
                 {
-                    string shownItem = item.ToString();
-                    Console.WriteLine(shownItem);
+                    Console.WriteLine(item.ToString());
                 }
                 ShowMenu();
                 ChooseMenuOption();
@@ -144,8 +141,7 @@ namespace EisenhowerMain
                 TodoQuarter quater = Matrix.GetQuarter("NN");
                 foreach (var item in quater.GetItems())
                 {
-                    string shownItem = item.ToString();
-                    Console.WriteLine(shownItem);
+                    Console.WriteLine(item.ToString());
                 }
                 ShowMenu();
                 ChooseMenuOption();
