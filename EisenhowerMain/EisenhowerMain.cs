@@ -166,7 +166,21 @@ namespace EisenhowerMain
 
         static void MarkItem()
         {
-            //Not Implemented
+            Console.WriteLine("Please provide title of task");
+            string title = Console.ReadLine();
+            foreach (var quarter in Matrix.GetQuarters())
+            {
+                foreach (var item in quarter.Value.GetItems())
+                {
+                    if (title == item.Get_title())
+                    {
+                        item.Mark();
+                        break;
+                    }
+                }
+            }
+            ShowMenu();
+            ChooseMenuOption();
         }
 
         static void RemoveItem()
