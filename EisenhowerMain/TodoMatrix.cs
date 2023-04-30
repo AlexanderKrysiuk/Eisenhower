@@ -2,13 +2,17 @@ using EisenhowerCore;
 using EisenhowerMain;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace EisenhowerMain
 {
 
     public class TodoMatrix
     {
+        string filepath = "matrix.csv";
         private Dictionary<string, TodoQuarter> todoQuarters = new Dictionary<string, TodoQuarter>();
 
         public TodoMatrix()
@@ -51,12 +55,72 @@ namespace EisenhowerMain
 
         public void AddItemsFromFile(string filename)
         {
+            using(StreamReader reader = new StreamReader(filename))
+            {
+                while(!reader.EndOfStream)
+                {
+                    string text = reader.ReadLine();
+                    string[] quarters;
+                    quarters = text.Split(';');
+                    foreach (string quarter in quarters)
+                    {
+                        if (quarter.Length == 0)
+                        {
+                            return;
+                        }
+                        string importance = quarter[0].ToString();
+                        string entries = quarter.Substring(0,4);
+                        string[] items = entries.Split("] ");
+                        foreach (string item in items)
+                        {
+                            if (item.Length < 5)
+                            {
+                                return;
+                            }
+                            string itemName = Regex.Replace(item, @"[\d-]", string.Empty);
+                            itemName = itemName.Remove(0, 5);
+                            
+                            int dateSeparator = item.IndexOf("-");
+                            if (dateSeparator < 2)
+                            {
+                                return;
+                            }
+                            itemName = itemName.Remove(itemName.Length - 1, 2);
+                            string itemDate = item.Substring(dateSeparator - 2, 4);
+                            itemDate = itemDate.Replace(" ", String.Empty);
+                            DateTime deadline = DateTime.ParseExact(itemDate, "dd-M", CultureInfo.InvariantCulture);
 
+                            if (importance == "I")
+                            {
+                                AddItem(itemName, deadline, true);
+                            }
+                            else
+                            {
+                                AddItem(itemName, deadline, false);
+                            }
+                        }
+
+                    }
+
+                }
+            }
         }
 
         public void SaveItemsToFile(string filename)
         {
-
+            using (StreamWriter writer = new StreamWriter(new FileStream(filename, FileMode.Create, FileAccess.Write)))
+            {
+                string text = "";
+                foreach (KeyValuePair<string, TodoQuarter> entry in todoQuarters)
+                {
+                    text += "#";
+                    text += entry.Key;
+                    text += ",";
+                    text += entry.Value.ToString();
+                    text += ";";
+                }
+                    writer.WriteLine(text);
+            }
         }
 
         public void ArchiveItems()
@@ -122,9 +186,11 @@ namespace EisenhowerMain
                         break;
                 }
                 writtenMatrix += entry.Value.ToString();
-                writtenMatrix += "\n";
+                writtenMatrix += ";\n";
             }
             return writtenMatrix;
         }
+
+
     }
 }
