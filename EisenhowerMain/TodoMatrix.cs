@@ -12,7 +12,6 @@ namespace EisenhowerMain
 
     public class TodoMatrix
     {
-        string filepath = "matrix.csv";
         private Dictionary<string, TodoQuarter> todoQuarters = new Dictionary<string, TodoQuarter>();
 
         public TodoMatrix()
@@ -64,39 +63,30 @@ namespace EisenhowerMain
                     quarters = text.Split(';');
                     foreach (string quarter in quarters)
                     {
-                        if (quarter.Length == 0)
+                        if (quarter.Length < 1)
                         {
                             return;
                         }
-                        string importance = quarter[0].ToString();
-                        string entries = quarter.Substring(0,4);
+                        string importance = quarter[1].ToString();
+                        string entries = quarter.Remove(0,4);
                         string[] items = entries.Split("] ");
                         foreach (string item in items)
                         {
-                            if (item.Length < 5)
+                            if (item.Length > 5)
                             {
-                                return;
-                            }
-                            string itemName = Regex.Replace(item, @"[\d-]", string.Empty);
-                            itemName = itemName.Remove(0, 5);
-                            
-                            int dateSeparator = item.IndexOf("-");
-                            if (dateSeparator < 2)
-                            {
-                                return;
-                            }
-                            itemName = itemName.Remove(itemName.Length - 1, 2);
-                            string itemDate = item.Substring(dateSeparator - 2, 4);
-                            itemDate = itemDate.Replace(" ", String.Empty);
-                            DateTime deadline = DateTime.ParseExact(itemDate, "dd-M", CultureInfo.InvariantCulture);
 
-                            if (importance == "I")
-                            {
-                                AddItem(itemName, deadline, true);
-                            }
-                            else
-                            {
-                                AddItem(itemName, deadline, false);
+                                string itemName = GetItemName(item);
+
+                                DateTime deadline = GetItemDeadline(item);
+                                
+                                if (importance == "I")
+                                {
+                                    AddItem(itemName, deadline, true);
+                                }
+                                else
+                                {
+                                    AddItem(itemName, deadline, false);
+                                }
                             }
                         }
 
@@ -104,6 +94,60 @@ namespace EisenhowerMain
 
                 }
             }
+        }
+
+        private DateTime GetItemDeadline(string item)
+        {
+            int dateSeparator = item.IndexOf("-");
+            string itemDate;
+            if (dateSeparator < 2)
+            {
+                itemDate = item.Substring(dateSeparator - 1, 4);
+            }
+            else
+            {
+                itemDate = item.Substring(dateSeparator - 2, 4);
+            }
+            itemDate = itemDate.Replace(" ", String.Empty);
+            string day = itemDate.Split("-")[0];
+            string month = itemDate.Split("-")[1];
+            DateTime deadline = new DateTime();
+            if (day.Length == 1)
+            {
+                if (month.Length == 1)
+                {
+                    deadline = DateTime.ParseExact(itemDate, "d-M", CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    deadline = DateTime.ParseExact(itemDate, "d-MM", CultureInfo.InvariantCulture);
+                }
+            }
+            else
+            {
+                if (month.Length == 1)
+                {
+                    deadline = DateTime.ParseExact(itemDate, "dd-M", CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    deadline = DateTime.ParseExact(itemDate, "dd-MM", CultureInfo.InvariantCulture);
+                }
+            }
+            return deadline;
+        }
+
+        private string GetItemName(string item)
+        {
+            int offset = item.Split(" ")[0].Length;
+            string itemName = item.Substring(offset, item.Length-offset);
+
+            if (itemName[itemName.Length - 2] == '[')
+            {
+                itemName = itemName.Substring(0, itemName.Length - 2);
+            }
+            itemName = itemName.Substring(1, itemName.Length - 1);
+            return itemName;
         }
 
         public void SaveItemsToFile(string filename)
@@ -140,7 +184,7 @@ namespace EisenhowerMain
         public string GetStatus(DateTime deadline, bool isImportant)
         {
             DateTime currentTime = DateTime.Now;
-            TimeSpan difference = currentTime.Subtract(deadline);
+            TimeSpan difference = deadline.Subtract(currentTime);
             if (difference.Days > 3)
             {
                 if (isImportant)

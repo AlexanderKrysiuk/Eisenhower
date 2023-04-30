@@ -10,14 +10,14 @@ namespace EisenhowerCore
         { 
             TodoMatrix matrix = new TodoMatrix();
             DateTime currentTime = DateTime.Now;
-            DateTime deadlineNotUrgent = currentTime.AddDays(-10);
-            DateTime deadlineUrgent = currentTime.AddDays(-1);
+            DateTime deadlineNotUrgent = currentTime.AddDays(25);
+            DateTime deadlineUrgent = currentTime.AddDays(1);
             matrix.AddItem("(testing important, urgent)", deadlineUrgent, true);
             matrix.AddItem("(testing important, not urgent)", deadlineNotUrgent, true);
             matrix.AddItem("(important, not urgent 2)", deadlineNotUrgent, true);
             matrix.AddItem("(testing not important, urgent)", deadlineUrgent);
             matrix.AddItem("(testing not important, not urgent)", deadlineNotUrgent);
-            //Console.Write(matrix.ToString());
+            Console.Write(matrix.ToString());
 
 
             
