@@ -64,7 +64,7 @@ namespace EisenhowerMain
                     break;
                 default:
                     Console.Clear();
-                    ShowMenu();
+                    //ShowMenu();
                     Console.WriteLine("Please provide right number");
                     ChooseMenuOption();
                     break;
@@ -76,76 +76,27 @@ namespace EisenhowerMain
             //Not Implemented
         }
 
+        static void QuarterOptions()
+        {
+            Console.WriteLine("Please provide symbol of status You would like to use:\n" +
+                              "IU - urgent & important items\n" +
+                              "IN - not urgent & important items\n" +
+                              "NU - urgent & not important items\n" +
+                              "NN - not urgent & not important items");   
+        }
+
         static void ShownToDoItemsByStatus()
         {
-            Console.WriteLine("Please provide number of status You would like to see:\n" +
-                              "1 - urgent & important items\n" +
-                              "2 - not urgent & important items\n" +
-                              "3 - urgent & not important items\n" +
-                              "4 - not urgent & not important items");
+            QuarterOptions();
             string option = Console.ReadLine();
-            switch (option)
+            TodoQuarter quarter = Matrix.GetQuarter(option);
+            int index = 1;
+            foreach (var item in quarter.GetItems() )
             {
-                case "1":
-                    ShowUrgentImportant();
-                    break;
-                case "2":
-                    ShowNotUrgentImportant();
-                    break;
-                case "3":
-                    ShowUrgentNotImportant();
-                    break;
-                case "4":
-                    ShowNotUrgentNotImportant();
-                    break;
-                default:
-                    ShownToDoItemsByStatus();
-                    break;
+                Console.WriteLine(index + ". " + item);
+                index++;
             }
-
-            void ShowUrgentImportant()
-            {
-                TodoQuarter quater = Matrix.GetQuarter("IU");
-                foreach (var item in quater.GetItems())
-                {
-                    Console.WriteLine(item.ToString());
-                }
-                ShowMenu();
-                ChooseMenuOption();
-            }
-
-            void ShowNotUrgentImportant()
-            {
-                TodoQuarter quater = Matrix.GetQuarter("IN");
-                foreach (var item in quater.GetItems())
-                {
-                    Console.WriteLine(item.ToString());
-                }
-                ShowMenu();
-                ChooseMenuOption();
-            }
-
-            void ShowUrgentNotImportant()
-            {
-                TodoQuarter quater = Matrix.GetQuarter("NU");
-                foreach (var item in quater.GetItems())
-                {
-                    Console.WriteLine(item.ToString());
-                }
-                ShowMenu();
-                ChooseMenuOption();
-            }
-
-            void ShowNotUrgentNotImportant()
-            {
-                TodoQuarter quater = Matrix.GetQuarter("NN");
-                foreach (var item in quater.GetItems())
-                {
-                    Console.WriteLine(item.ToString());
-                }
-                ShowMenu();
-                ChooseMenuOption();
-            }
+            ChooseMenuOption();
         }
 
         static void AddItem()
@@ -160,13 +111,13 @@ namespace EisenhowerMain
             
             Matrix.AddItem(title,data,isImportant);
             
-            ShowMenu();
+            //ShowMenu();
             ChooseMenuOption();
         }
 
         static void MarkItem()
         {
-            Console.WriteLine("Please provide title of task");
+            Console.WriteLine("Please provide title of the task to mark:");
             string title = Console.ReadLine();
             foreach (var quarter in Matrix.GetQuarters())
             {
@@ -179,18 +130,28 @@ namespace EisenhowerMain
                     }
                 }
             }
-            ShowMenu();
+            //ShowMenu();
             ChooseMenuOption();
         }
 
         static void RemoveItem()
         {
-            // Not Implemented
+            QuarterOptions();
+            string option = Console.ReadLine();
+            TodoQuarter quarter = Matrix.GetQuarter(option);            
+            Console.WriteLine("Please provide index of the task to remove:");
+            int index = Convert.ToInt32(Console.ReadLine()) - 1;
+            quarter.GetItems().RemoveAt(index);
+            ChooseMenuOption();
         }
 
         static void ArchiveItems()
         {
-            // Not Implemented
+            foreach (var quarter in Matrix.GetQuarters())
+            {
+                quarter.Value.GetItems().RemoveAll(item => item._isDone == true);
+            }
+            ChooseMenuOption();
         }
     }
 }
