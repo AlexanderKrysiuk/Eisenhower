@@ -25,14 +25,14 @@ namespace EisenhowerMain
 
         static void ShowMenu()
         {
-            Console.WriteLine("Welcome to Eisenhower Matrix App. What would You like to do?");
-            Console.WriteLine("Exit - exit application");
-            Console.WriteLine("Show - show TODO items by status");
-            Console.WriteLine("Add - add an item");
-            Console.WriteLine("Mark - mark item done/undone");
-            Console.WriteLine("Remove - remove item");
-            Console.WriteLine("Archive - archive items (remove all done)");
-            Console.WriteLine("Menu - show menu");
+            Console.WriteLine("Welcome to Eisenhower Matrix App. What would You like to do?\n" +
+                              "Exit - exit application\n" +
+                              "Show - show TODO items by status\n" +
+                              "Add - add an item\n" +
+                              "Mark - mark item done/undone\n" +
+                              "Remove - remove item\n" +
+                              "Archive - archive items (remove all done)\n" +
+                              "Menu - show menu");
             ChooseMenuOption();
         }
 
