@@ -12,16 +12,18 @@ namespace EisenhowerCore
             DateTime currentTime = DateTime.Now;
             DateTime deadlineNotUrgent = currentTime.AddDays(25);
             DateTime deadlineUrgent = currentTime.AddDays(1);
+
+            // section for saving file //
+
             matrix.AddItem("(testing important, urgent)", deadlineUrgent, true);
             matrix.AddItem("(testing important, not urgent)", deadlineNotUrgent, true);
             matrix.AddItem("(important, not urgent 2)", deadlineNotUrgent, true);
             matrix.AddItem("(testing not important, urgent)", deadlineUrgent);
             matrix.AddItem("(testing not important, not urgent)", deadlineNotUrgent);
-            Console.Write(matrix.ToString());
-
-
-            
             matrix.SaveItemsToFile("h.csv");
+
+            // endsection //
+
             matrix.AddItemsFromFile("h.csv");
             Display display = new Display();
             display.PrintMatrix(matrix);
