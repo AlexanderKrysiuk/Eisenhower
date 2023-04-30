@@ -27,16 +27,14 @@ namespace EisenhowerMain
         static void ShowMenu()
         {
             Console.WriteLine("Welcome to Eisenhower Matrix App. What would You like to do?");
-            Console.WriteLine("0 - Exit");
-            Console.WriteLine("1 - shown TODO items by status\n" +
-                              "  - urgent & important items\n" +
-                              "  - not urgent & important items\n" +
-                              "  - urgent & not important items\n" +
-                              "  - not urgent & not important items");
-            Console.WriteLine("2 - add an item");
-            Console.WriteLine("3 - mark item done/undone");
-            Console.WriteLine("4 - remove item");
-            Console.WriteLine("5 - archive items (remove all done)");
+            Console.WriteLine("Exit - exit application");
+            Console.WriteLine("Show - show TODO items by status");
+            Console.WriteLine("Add - add an item");
+            Console.WriteLine("Mark - mark item done/undone");
+            Console.WriteLine("Remove - remove item");
+            Console.WriteLine("Archive - archive items (remove all done)");
+            Console.WriteLine("Menu - show menu");
+            ChooseMenuOption();
         }
 
         static void ChooseMenuOption()
@@ -44,23 +42,26 @@ namespace EisenhowerMain
             string userInput = Console.ReadLine();
             switch (userInput)
             {
-                case "0":
+                case "Exit":
                     Exit();
                     break;
-                case "1":
+                case "Show":
                     ShownToDoItemsByStatus();
                     break;
-                case "2":
+                case "Add":
                     AddItem();
                     break;
-                case "3":
+                case "Mark":
                     MarkItem();
                     break;
-                case "4": 
+                case "Remove": 
                     RemoveItem();
                     break;
-                case "5":
+                case "Archive":
                     ArchiveItems();
+                    break;
+                case "Menu":
+                    ShowMenu();
                     break;
                 default:
                     Console.Clear();
@@ -167,7 +168,7 @@ namespace EisenhowerMain
         {
             foreach (var quarter in Matrix.GetQuarters())
             {
-                quarter.Value.GetItems().RemoveAll(item => item._isDone == true);
+                quarter.Value.GetItems().RemoveAll(item => item._isDone);
             }
             ChooseMenuOption();
         }
