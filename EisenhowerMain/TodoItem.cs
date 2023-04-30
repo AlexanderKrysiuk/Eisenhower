@@ -38,6 +38,11 @@ namespace EisenhowerMain
             _isDone = false;
         }
 
+        public bool Get_Status()
+        {
+            return _isDone;
+        }
+
         public override string ToString()
         {
             string doneStatus = _isDone ? "[x]" : "[ ]";

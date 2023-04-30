@@ -93,8 +93,26 @@ namespace EisenhowerMain
             int index = 1;
             foreach (var item in quarter.GetItems() )
             {
+                DateTime currentTime = DateTime.Now;
+                TimeSpan difference = currentTime.Subtract(item.Get_deadline());
+                if (item.Get_Status() == false)
+                {
+                    if (difference.Days > 3)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    }
+                    if (difference.Days <= 3)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                    }
+                    if (difference.Days == 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                }
                 Console.WriteLine(index + ". " + item);
                 index++;
+                Console.ForegroundColor = ConsoleColor.White;
             }
             ChooseMenuOption();
         }
