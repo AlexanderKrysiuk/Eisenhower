@@ -8,7 +8,6 @@ namespace EisenhowerMain
         static public void Main(String[] args)
         {
             ShowMenu();
-            ChooseMenuOption();
             /*
             TodoMatrix matrix = new TodoMatrix();
             DateTime currentTime = DateTime.Now;
