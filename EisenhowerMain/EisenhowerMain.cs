@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data;
-using Spectre.Console;
 
 namespace EisenhowerMain
 {
@@ -208,6 +206,7 @@ namespace EisenhowerMain
 
             AnsiConsole.Write(table);
         }
+        */
 
         static void ShowMatrix2()
         {
