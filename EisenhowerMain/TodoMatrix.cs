@@ -65,7 +65,7 @@ namespace EisenhowerMain
                         }
                         string importance = quarter[1].ToString();
                         string entries = quarter.Remove(0, 4);
-                        string[] items = entries.Split("] ");
+                        string[] items = entries.Split("} ");
                         foreach (string item in items)
                         {
                             if (item.Length > 5)
@@ -138,7 +138,7 @@ namespace EisenhowerMain
             int offset = item.Split(" ")[0].Length;
             string itemName = item.Substring(offset, item.Length - offset);
 
-            if (itemName[itemName.Length - 2] == '[')
+            if (itemName[itemName.Length - 2] == '{')
             {
                 itemName = itemName.Substring(0, itemName.Length - 2);
             }

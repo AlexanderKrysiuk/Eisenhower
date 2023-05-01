@@ -46,27 +46,22 @@ namespace EisenhowerMain
                     break;
                 case "Add":
                     AddItem();
-                    ShowMatrix2();
-                    ShowMenu();
+                    ShowMatrix();
                     break;
                 case "Mark":
                     MarkItem();
-                    ShowMatrix2();
-                    ShowMenu();
+                    ShowMatrix();
                     break;
                 case "Remove": 
                     RemoveItem();
-                    ShowMatrix2();
-                    ShowMenu();
+                    ShowMatrix();
                     break;
                 case "Archive":
                     ArchiveItems();
-                    ShowMatrix2();
-                    ShowMenu();
+                    ShowMatrix();
                     break;
                 case "Matrix":
-                    ShowMatrix2();
-                    ShowMenu();
+                    ShowMatrix();
                     break;
                 case "Save":
                     SaveMatrix();
@@ -74,8 +69,7 @@ namespace EisenhowerMain
                     break;
                 case "Load":
                     LoadMatrix();
-                    ShowMatrix2();
-                    ShowMenu();
+                    ShowMatrix();
                     break;
                 case "Menu":
                     ShowMenu();
@@ -137,23 +131,20 @@ namespace EisenhowerMain
 
         static void AddItem()
         {
-            display.Print("Please provide title of the task:");
+            display.Print("Please provide title of the task.\nMake sure not to use the characters '{' and '}'");
             string title = getInput.GetInput();
             display.Print("Please provide deadline data in format yyyy-mm-dd");
             string datestring = getInput.GetInput();
             DateTime data = DateTime.Parse(datestring);
-            display.Print("Is this item important? (y/N)");
-            
-            bool isImportant = CheckIfImportant();
-
-
+            display.Print("Is this item important? (y/n)");
+            bool isImportant = GetYesOrNo();
             //bool isImportant = Convert.ToBoolean(getInput.GetInput());
             
             matrix.AddItem(title,data,isImportant);
             display.Print("Added item.");
         }
 
-        static bool CheckIfImportant()
+        static bool GetYesOrNo()
         {
             string input = getInput.GetInput();
             while (true)
@@ -176,7 +167,7 @@ namespace EisenhowerMain
 
         static void MarkItem()
         {
-            display.Print("Please provide title of the task to mark:");
+            display.Print("Please provide title of the task to mark.");
             string title = getInput.GetInput();
             foreach (var quarter in matrix.GetQuarters())
             {
@@ -199,8 +190,12 @@ namespace EisenhowerMain
             TodoQuarter quarter = matrix.GetQuarter(option);            
             display.Print("Please provide the number of the task to remove (starting from 1):");
             int index = Convert.ToInt32(getInput.GetInput()) - 1;
-            quarter.GetItems().RemoveAt(index);
-            display.Print("Removed item.");
+            display.Print($"Are you sure you want to remove {quarter.GetItem(index).Get_title()} (y/n)?");
+            bool confirmation = GetYesOrNo();
+            if (confirmation) {
+                quarter.GetItems().RemoveAt(index);
+                display.Print("Removed item.");
+            }
         }
 
         static void ArchiveItems()
@@ -226,14 +221,16 @@ namespace EisenhowerMain
                     }
                 }
             }
-            
+
             string important = "I\nm\np\no\nr\nt\na\nn\nt";
             string notimportant = "N\no\nt\n \nI\nm\np\no\nr\nt\na\nn\nt";
-            
+
+
             string IU = matrix.GetQuarter("IU").TurnListIntoString();
             string IN = matrix.GetQuarter("IN").TurnListIntoString();
             string NU = matrix.GetQuarter("NU").TurnListIntoString();
             string NN = matrix.GetQuarter("NN").TurnListIntoString();
+
 
             var table = new Table();
             
@@ -249,11 +246,13 @@ namespace EisenhowerMain
             table.AddRow(notimportant, NU, NN);
 
             AnsiConsole.Write(table);
+            ShowMenu();
         }
 
         static void ShowMatrix2()
         {
             display.PrintMatrix(matrix);
+            ShowMenu();
         }
 
         static void SaveMatrix()

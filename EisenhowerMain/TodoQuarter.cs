@@ -55,11 +55,12 @@ namespace EisenhowerMain
         
         public string TurnListIntoString()
         {
-            int index = 0;
+            int index = 1;
             string items = "";
             foreach (var item in GetItems())
             {
                 items += index + ". " + item +"\n";
+                index++;
             }
             return items;
         }
