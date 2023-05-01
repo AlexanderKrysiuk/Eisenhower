@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using Spectre.Console;
 
 namespace EisenhowerMain
 {
@@ -40,27 +42,40 @@ namespace EisenhowerMain
                     break;
                 case "Show":
                     ShownToDoItemsByStatus();
+                    ShowMenu();
                     break;
                 case "Add":
                     AddItem();
+                    ShowMatrix2();
+                    ShowMenu();
                     break;
                 case "Mark":
                     MarkItem();
+                    ShowMatrix2();
+                    ShowMenu();
                     break;
                 case "Remove": 
                     RemoveItem();
+                    ShowMatrix2();
+                    ShowMenu();
                     break;
                 case "Archive":
                     ArchiveItems();
+                    ShowMatrix2();
+                    ShowMenu();
                     break;
                 case "Matrix":
                     ShowMatrix2();
+                    ShowMenu();
                     break;
                 case "Save":
                     SaveMatrix();
+                    ShowMenu();
                     break;
                 case "Load":
                     LoadMatrix();
+                    ShowMatrix2();
+                    ShowMenu();
                     break;
                 case "Menu":
                     ShowMenu();
@@ -76,7 +91,8 @@ namespace EisenhowerMain
 
         static void Exit()
         {
-            //Not Implemented
+            display.Print("Bye!");
+            Environment.Exit(0);
         }
 
         static void QuarterOptions(Display display)
@@ -126,10 +142,36 @@ namespace EisenhowerMain
             display.Print("Please provide deadline data in format yyyy-mm-dd");
             string datestring = getInput.GetInput();
             DateTime data = DateTime.Parse(datestring);
-            display.Print("Is this item important? parse true or false");
-            bool isImportant = Convert.ToBoolean(getInput.GetInput());
+            display.Print("Is this item important? (y/N)");
+            
+            bool isImportant = CheckIfImportant();
+
+
+            //bool isImportant = Convert.ToBoolean(getInput.GetInput());
             
             matrix.AddItem(title,data,isImportant);
+            display.Print("Added item.");
+        }
+
+        static bool CheckIfImportant()
+        {
+            string input = getInput.GetInput();
+            while (true)
+            {
+                if (input.ToUpper() == "Y")
+                {
+                    return true;
+                }
+                else if (input.ToUpper() == "N")
+                {
+                    return false;
+                }
+                else
+                {
+                    display.Print("Please enter y or n");
+                    input = getInput.GetInput();
+                }
+            }
         }
 
         static void MarkItem()
@@ -143,6 +185,7 @@ namespace EisenhowerMain
                     if (title == item.Get_title())
                     {
                         item.Mark();
+                        display.Print("Marked item.");
                         break;
                     }
                 }
@@ -154,9 +197,10 @@ namespace EisenhowerMain
             QuarterOptions(display);
             string option = getInput.GetInput();
             TodoQuarter quarter = matrix.GetQuarter(option);            
-            display.Print("Please provide index of the task to remove:");
+            display.Print("Please provide the number of the task to remove (starting from 1):");
             int index = Convert.ToInt32(getInput.GetInput()) - 1;
             quarter.GetItems().RemoveAt(index);
+            display.Print("Removed item.");
         }
 
         static void ArchiveItems()
@@ -206,7 +250,6 @@ namespace EisenhowerMain
 
             AnsiConsole.Write(table);
         }
-        */
 
         static void ShowMatrix2()
         {
