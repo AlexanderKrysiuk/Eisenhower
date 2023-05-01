@@ -49,24 +49,31 @@ namespace EisenhowerMain
                     break;
                 case "Show":
                     ShownToDoItemsByStatus();
+                    ChooseMenuOption();
                     break;
                 case "Add":
                     AddItem();
+                    ChooseMenuOption();
                     break;
                 case "Mark":
                     MarkItem();
+                    ChooseMenuOption();
                     break;
                 case "Remove": 
                     RemoveItem();
+                    ChooseMenuOption();
                     break;
                 case "Archive":
                     ArchiveItems();
+                    ChooseMenuOption();
                     break;
                 case "Matrix":
                     ShowMatrix();
+                    ChooseMenuOption();
                     break;
                 case "Menu":
                     ShowMenu();
+                    ChooseMenuOption();
                     break;
                 default:
                     Console.Clear();
@@ -79,7 +86,9 @@ namespace EisenhowerMain
 
         static void Exit()
         {
-            //Not Implemented
+            ArchiveItems();
+            Matrix.SaveItemsToFile("Database");
+            Console.WriteLine("The data has been successfully saved to the CSV file");
         }
 
         static void QuarterOptions()
@@ -120,7 +129,6 @@ namespace EisenhowerMain
                 index++;
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            ChooseMenuOption();
         }
 
         static void AddItem()
@@ -134,9 +142,6 @@ namespace EisenhowerMain
             bool isImportant = Convert.ToBoolean(Console.ReadLine());
             
             Matrix.AddItem(title,data,isImportant);
-            
-            //ShowMenu();
-            ChooseMenuOption();
         }
 
         static void MarkItem()
@@ -154,8 +159,6 @@ namespace EisenhowerMain
                     }
                 }
             }
-            //ShowMenu();
-            ChooseMenuOption();
         }
 
         static void RemoveItem()
@@ -166,7 +169,6 @@ namespace EisenhowerMain
             Console.WriteLine("Please provide index of the task to remove:");
             int index = Convert.ToInt32(Console.ReadLine()) - 1;
             quarter.GetItems().RemoveAt(index);
-            ChooseMenuOption();
         }
 
         static void ArchiveItems()
@@ -175,7 +177,6 @@ namespace EisenhowerMain
             {
                 quarter.Value.GetItems().RemoveAll(item => item._isDone);
             }
-            ChooseMenuOption();
         }
 
         static void ShowMatrix()
@@ -194,13 +195,13 @@ namespace EisenhowerMain
                 }
             }
             
-            string important = "I\nm\np\no\nr\nt\na\nn\nt";
-            string notimportant = "N\no\nt\n \nI\nm\np\no\nr\nt\na\nn\nt";
+            string important = "Important";
+            string notimportant = "Not Important";
             
-            string IU = Matrix.GetQuarter("IU").TurnListIntoString();
-            string IN = Matrix.GetQuarter("IN").TurnListIntoString();
-            string NU = Matrix.GetQuarter("NU").TurnListIntoString();
-            string NN = Matrix.GetQuarter("NN").TurnListIntoString();
+            //string IU = Matrix.GetQuarter("IU").TurnListIntoString();
+            //string IN = Matrix.GetQuarter("IN").TurnListIntoString();
+            //string NU = Matrix.GetQuarter("NU").TurnListIntoString();
+            //string NN = Matrix.GetQuarter("NN").TurnListIntoString();
 
             var table = new Table();
             
@@ -210,10 +211,32 @@ namespace EisenhowerMain
             table.AddColumn("Urgent");
             table.AddColumn("Not Urgent");
             
+            for (int index = 0; index < important.Length; index++)
+            {
+                string taskIU;
+                TodoQuarter quarterIU = Matrix.GetQuarter("IU");
+                if (index >= 0 && index < quarterIU.GetItems().Count)
+                {
+                    TodoItem IUitem = quarterIU.GetItem(index);
+                    taskIU = IUitem.ToString();
+                }
+                else
+                {
+                    taskIU = "";
+                }
+                
+                
+                
+                string character = important[index].ToString();
+                table.AddRow(character, " 05-10 Spanie","Jakiś inny string");
+            }
+            table.AddEmptyRow();
 
-            table.AddRow(important, IU, IN);
-            table.AddRow("-", new string('-',ItemLength),new string('-',ItemLength));
-            table.AddRow(notimportant, NU, NN);
+            for (int index = 0; index < notimportant.Length; index++)
+            {
+                string character = notimportant[index].ToString();
+                table.AddRow(character, "kolejny string", "następny string");
+            }
 
             AnsiConsole.Write(table);
         }

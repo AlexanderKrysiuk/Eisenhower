@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Numerics;
+using System.Runtime.Serialization.Formatters;
+using System.IO;
+using System.Text;
 
 namespace EisenhowerMain
 {
@@ -48,12 +52,24 @@ namespace EisenhowerMain
 
         public void AddItemsFromFile(string filename)
         {
+            
 
         }
 
         public void SaveItemsToFile(string filename)
         {
-
+            string filepath = $@"{filename}.csv";
+            foreach (var quarter in GetQuarters())
+            {
+                foreach (var item in quarter.Value.GetItems())
+                {
+                    using (StreamWriter sw = new StreamWriter(filepath, true))
+                    {
+                        sw.WriteLine($"{quarter.Key} {item}");
+                    }
+                }
+            }
+            
         }
 
         public void ArchiveItems()
