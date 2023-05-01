@@ -52,6 +52,17 @@ namespace EisenhowerMain
 
             return result.TrimEnd();
         }
+        
+        public string TurnListIntoString()
+        {
+            int index = 0;
+            string items = "";
+            foreach (var item in GetItems())
+            {
+                items += index + ". " + item +"\n";
+            }
+            return items;
+        }
     }
 
 }

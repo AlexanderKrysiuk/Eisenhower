@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using Spectre.Console;
 
 namespace EisenhowerMain
 {
@@ -32,6 +34,7 @@ namespace EisenhowerMain
                               "Mark - mark item done/undone\n" +
                               "Remove - remove item\n" +
                               "Archive - archive items (remove all done)\n" +
+                              "Matrix - Show Whole Matrix\n" +
                               "Menu - show menu");
             ChooseMenuOption();
         }
@@ -58,6 +61,9 @@ namespace EisenhowerMain
                     break;
                 case "Archive":
                     ArchiveItems();
+                    break;
+                case "Matrix":
+                    ShowMatrix();
                     break;
                 case "Menu":
                     ShowMenu();
@@ -170,6 +176,46 @@ namespace EisenhowerMain
                 quarter.Value.GetItems().RemoveAll(item => item._isDone);
             }
             ChooseMenuOption();
+        }
+
+        static void ShowMatrix()
+        {
+            int ItemLength = 10;
+            foreach (var quarter in Matrix.GetQuarters())
+            {
+                int index = 0;
+                foreach (var item in quarter.Value.GetItems())
+                {
+                    string Length = index + ". " + item;
+                    if (Length.Length > ItemLength)
+                    {
+                        ItemLength = Length.Length;
+                    }
+                }
+            }
+            
+            string important = "I\nm\np\no\nr\nt\na\nn\nt";
+            string notimportant = "N\no\nt\n \nI\nm\np\no\nr\nt\na\nn\nt";
+            
+            string IU = Matrix.GetQuarter("IU").TurnListIntoString();
+            string IN = Matrix.GetQuarter("IN").TurnListIntoString();
+            string NU = Matrix.GetQuarter("NU").TurnListIntoString();
+            string NN = Matrix.GetQuarter("NN").TurnListIntoString();
+
+            var table = new Table();
+            
+            table.Border = TableBorder.Ascii2;
+            
+            table.AddColumn("");
+            table.AddColumn("Urgent");
+            table.AddColumn("Not Urgent");
+            
+
+            table.AddRow(important, IU, IN);
+            table.AddRow("-", new string('-',ItemLength),new string('-',ItemLength));
+            table.AddRow(notimportant, NU, NN);
+
+            AnsiConsole.Write(table);
         }
     }
 }
