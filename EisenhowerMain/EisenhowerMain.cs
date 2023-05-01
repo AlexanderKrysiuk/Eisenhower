@@ -71,7 +71,7 @@ namespace EisenhowerMain
                 default:
                     Console.Clear();
                     //ShowMenu();
-                    Console.WriteLine("Please provide right number");
+                    Console.WriteLine("Please provide right command");
                     ChooseMenuOption();
                     break;
             }
