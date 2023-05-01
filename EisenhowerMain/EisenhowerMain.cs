@@ -42,27 +42,35 @@ namespace EisenhowerMain
                     break;
                 case "Show":
                     ShownToDoItemsByStatus(matrix, display, getInput);
+                    ShowMenu(matrix, display, getInput);
                     break;
                 case "Add":
                     AddItem(matrix, display, getInput);
+                    ShowMenu(matrix, display, getInput);
                     break;
                 case "Mark":
                     MarkItem(matrix, display, getInput);
+                    ShowMenu(matrix, display, getInput);
                     break;
                 case "Remove": 
                     RemoveItem(matrix, display, getInput);
+                    ShowMenu(matrix, display, getInput);
                     break;
                 case "Archive":
                     ArchiveItems(matrix, display, getInput);
+                    ShowMenu(matrix, display, getInput);
                     break;
                 case "Matrix":
                     ShowMatrix2(matrix, display, getInput);
+                    ShowMenu(matrix, display, getInput);
                     break;
                 case "Save":
                     SaveMatrix(matrix, display, getInput);
+                    ShowMenu(matrix, display, getInput);
                     break;
                 case "Load":
                     LoadMatrix(matrix, display, getInput);
+                    ShowMenu(matrix, display, getInput);
                     break;
                 case "Menu":
                     ShowMenu(matrix, display, getInput);
@@ -119,7 +127,6 @@ namespace EisenhowerMain
                 index++;
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            ChooseMenuOption(matrix, display, getInput);
         }
 
         static void AddItem(TodoMatrix matrix, Display display, Input getInput)
@@ -133,9 +140,6 @@ namespace EisenhowerMain
             bool isImportant = Convert.ToBoolean(getInput.GetInput());
             
             matrix.AddItem(title,data,isImportant);
-            
-            ShowMenu(matrix, display, getInput);
-            //ChooseMenuOption(matrix);
         }
 
         static void MarkItem(TodoMatrix matrix, Display display, Input getInput)
@@ -153,8 +157,6 @@ namespace EisenhowerMain
                     }
                 }
             }
-            ShowMenu(matrix, display, getInput);
-            //ChooseMenuOption(matrix);
         }
 
         static void RemoveItem(TodoMatrix matrix, Display display, Input getInput)
@@ -165,8 +167,6 @@ namespace EisenhowerMain
             display.Print("Please provide index of the task to remove:");
             int index = Convert.ToInt32(getInput.GetInput()) - 1;
             quarter.GetItems().RemoveAt(index);
-            ShowMenu(matrix, display, getInput);
-            //ChooseMenuOption(matrix);
         }
 
         static void ArchiveItems(TodoMatrix matrix, Display display, Input getInput)
@@ -175,8 +175,6 @@ namespace EisenhowerMain
             {
                 quarter.Value.GetItems().RemoveAll(item => item._isDone);
             }
-            ShowMenu(matrix, display, getInput);
-            //ChooseMenuOption(matrix);
         }
 
         static void ShowMatrix(TodoMatrix matrix, Display display, Input getInput)
@@ -217,14 +215,11 @@ namespace EisenhowerMain
             table.AddRow(notimportant, NU, NN);
 
             AnsiConsole.Write(table);
-            ShowMenu(matrix, display, getInput);
-            //ChooseMenuOption(matrix);
         }
 
         static void ShowMatrix2(TodoMatrix matrix, Display display, Input getInput)
         {
             display.PrintMatrix(matrix);
-            ShowMenu(matrix, display, getInput);
         }
 
         static void SaveMatrix(TodoMatrix matrix, Display display, Input getInput)
@@ -239,16 +234,12 @@ namespace EisenhowerMain
             matrix.AddItem("(testing not important, not urgent)", deadlineNotUrgent);
             matrix.SaveItemsToFile("list.csv");
             display.Print("List generated and saved to list.csv, type \"Matrix\" to display");
-            ShowMenu(matrix, display, getInput);
-            //ChooseMenuOption(matrix);
         }
 
         static void LoadMatrix(TodoMatrix matrix, Display display, Input getInput)
         {
             matrix.AddItemsFromFile("list.csv");
             display.Print("List loaded from list.csv, type \"Matrix\" to display");
-            ShowMenu(matrix, display, getInput);
-            //ChooseMenuOption(matrix);
         }
 
     }
