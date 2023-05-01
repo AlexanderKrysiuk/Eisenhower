@@ -6,17 +6,17 @@ namespace EisenhowerMain
 {
     public class EisenhowerMain
     {
-        static TodoMatrix Matrix = new TodoMatrix();
+        static TodoMatrix matrix = new TodoMatrix();
+        static Display display = new Display();
+        static Input getInput = new Input();
+
         static public void Main(String[] args)
         {
-            TodoMatrix matrix = new TodoMatrix();
-            Display display = new Display();
-            Input getInput = new Input();
             display.Print("Welcome to Eisenhower Matrix!");
-            ShowMenu(matrix, display, getInput);
+            ShowMenu();
         }
 
-        static void ShowMenu(TodoMatrix matrix, Display display, Input getInput)
+        static void ShowMenu()
         {
             display.Print("\nWhat would you like to do? (Press q to quit any time)\n" +
                               "Exit - exit application\n" +
@@ -29,10 +29,10 @@ namespace EisenhowerMain
                               "Save - save sample list to list.csv\n" +
                               "Load - load sample list from list.csv\n" +
                               "Menu - show menu");
-            ChooseMenuOption(matrix, display, getInput);
+            ChooseMenuOption();
         }
 
-        static void ChooseMenuOption(TodoMatrix matrix, Display display, Input getInput)
+        static void ChooseMenuOption()
         {
             string userInput = getInput.GetInput();
             switch (userInput)
@@ -41,37 +41,37 @@ namespace EisenhowerMain
                     Exit();
                     break;
                 case "Show":
-                    ShownToDoItemsByStatus(matrix, display, getInput);
+                    ShownToDoItemsByStatus();
                     break;
                 case "Add":
-                    AddItem(matrix, display, getInput);
+                    AddItem();
                     break;
                 case "Mark":
-                    MarkItem(matrix, display, getInput);
+                    MarkItem();
                     break;
                 case "Remove": 
-                    RemoveItem(matrix, display, getInput);
+                    RemoveItem();
                     break;
                 case "Archive":
-                    ArchiveItems(matrix, display, getInput);
+                    ArchiveItems();
                     break;
                 case "Matrix":
-                    ShowMatrix2(matrix, display, getInput);
+                    ShowMatrix2();
                     break;
                 case "Save":
-                    SaveMatrix(matrix, display, getInput);
+                    SaveMatrix();
                     break;
                 case "Load":
-                    LoadMatrix(matrix, display, getInput);
+                    LoadMatrix();
                     break;
                 case "Menu":
-                    ShowMenu(matrix, display, getInput);
+                    ShowMenu();
                     break;
                 default:
                     //Console.Clear();
                     //ShowMenu();
                     display.Print("Please provide the right command");
-                    ChooseMenuOption(matrix, display, getInput);
+                    ChooseMenuOption();
                     break;
             }
         }
@@ -90,7 +90,7 @@ namespace EisenhowerMain
                               "NN - not urgent & not important items");   
         }
 
-        static void ShownToDoItemsByStatus(TodoMatrix matrix, Display display, Input getInput)
+        static void ShownToDoItemsByStatus()
         {
             QuarterOptions(display);
             string option = getInput.GetInput();
@@ -119,10 +119,10 @@ namespace EisenhowerMain
                 index++;
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            ChooseMenuOption(matrix, display, getInput);
+            ChooseMenuOption();
         }
 
-        static void AddItem(TodoMatrix matrix, Display display, Input getInput)
+        static void AddItem()
         {
             display.Print("Please provide title of the task:");
             string title = getInput.GetInput();
@@ -134,11 +134,11 @@ namespace EisenhowerMain
             
             matrix.AddItem(title,data,isImportant);
             
-            ShowMenu(matrix, display, getInput);
+            ShowMenu();
             //ChooseMenuOption(matrix);
         }
 
-        static void MarkItem(TodoMatrix matrix, Display display, Input getInput)
+        static void MarkItem()
         {
             display.Print("Please provide title of the task to mark:");
             string title = getInput.GetInput();
@@ -153,11 +153,11 @@ namespace EisenhowerMain
                     }
                 }
             }
-            ShowMenu(matrix, display, getInput);
+            ShowMenu();
             //ChooseMenuOption(matrix);
         }
 
-        static void RemoveItem(TodoMatrix matrix, Display display, Input getInput)
+        static void RemoveItem()
         {
             QuarterOptions(display);
             string option = getInput.GetInput();
@@ -165,21 +165,21 @@ namespace EisenhowerMain
             display.Print("Please provide index of the task to remove:");
             int index = Convert.ToInt32(getInput.GetInput()) - 1;
             quarter.GetItems().RemoveAt(index);
-            ShowMenu(matrix, display, getInput);
+            ShowMenu();
             //ChooseMenuOption(matrix);
         }
 
-        static void ArchiveItems(TodoMatrix matrix, Display display, Input getInput)
+        static void ArchiveItems()
         {
             foreach (var quarter in matrix.GetQuarters())
             {
                 quarter.Value.GetItems().RemoveAll(item => item._isDone);
             }
-            ShowMenu(matrix, display, getInput);
+            ShowMenu();
             //ChooseMenuOption(matrix);
         }
 
-        static void ShowMatrix(TodoMatrix matrix, Display display, Input getInput)
+        static void ShowMatrix()
         {
             int ItemLength = 10;
             foreach (var quarter in matrix.GetQuarters())
@@ -217,17 +217,17 @@ namespace EisenhowerMain
             table.AddRow(notimportant, NU, NN);
 
             AnsiConsole.Write(table);
-            ShowMenu(matrix, display, getInput);
+            ShowMenu();
             //ChooseMenuOption(matrix);
         }
 
-        static void ShowMatrix2(TodoMatrix matrix, Display display, Input getInput)
+        static void ShowMatrix2()
         {
             display.PrintMatrix(matrix);
-            ShowMenu(matrix, display, getInput);
+            ShowMenu();
         }
 
-        static void SaveMatrix(TodoMatrix matrix, Display display, Input getInput)
+        static void SaveMatrix()
         {
             DateTime currentTime = DateTime.Now;
             DateTime deadlineNotUrgent = currentTime.AddDays(25);
@@ -239,15 +239,15 @@ namespace EisenhowerMain
             matrix.AddItem("(testing not important, not urgent)", deadlineNotUrgent);
             matrix.SaveItemsToFile("list.csv");
             display.Print("List generated and saved to list.csv, type \"Matrix\" to display");
-            ShowMenu(matrix, display, getInput);
+            ShowMenu();
             //ChooseMenuOption(matrix);
         }
 
-        static void LoadMatrix(TodoMatrix matrix, Display display, Input getInput)
+        static void LoadMatrix()
         {
             matrix.AddItemsFromFile("list.csv");
             display.Print("List loaded from list.csv, type \"Matrix\" to display");
-            ShowMenu(matrix, display, getInput);
+            ShowMenu();
             //ChooseMenuOption(matrix);
         }
 
