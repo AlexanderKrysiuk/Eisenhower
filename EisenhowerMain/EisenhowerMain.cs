@@ -119,7 +119,6 @@ namespace EisenhowerMain
                 index++;
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            ChooseMenuOption();
         }
 
         static void AddItem()
@@ -133,9 +132,6 @@ namespace EisenhowerMain
             bool isImportant = Convert.ToBoolean(getInput.GetInput());
             
             matrix.AddItem(title,data,isImportant);
-            
-            ShowMenu();
-            //ChooseMenuOption(matrix);
         }
 
         static void MarkItem()
@@ -153,8 +149,6 @@ namespace EisenhowerMain
                     }
                 }
             }
-            ShowMenu();
-            //ChooseMenuOption(matrix);
         }
 
         static void RemoveItem()
@@ -165,8 +159,6 @@ namespace EisenhowerMain
             display.Print("Please provide index of the task to remove:");
             int index = Convert.ToInt32(getInput.GetInput()) - 1;
             quarter.GetItems().RemoveAt(index);
-            ShowMenu();
-            //ChooseMenuOption(matrix);
         }
 
         static void ArchiveItems()
@@ -175,8 +167,6 @@ namespace EisenhowerMain
             {
                 quarter.Value.GetItems().RemoveAll(item => item._isDone);
             }
-            ShowMenu();
-            //ChooseMenuOption(matrix);
         }
 
         static void ShowMatrix()
@@ -217,14 +207,11 @@ namespace EisenhowerMain
             table.AddRow(notimportant, NU, NN);
 
             AnsiConsole.Write(table);
-            ShowMenu();
-            //ChooseMenuOption(matrix);
         }
 
         static void ShowMatrix2()
         {
             display.PrintMatrix(matrix);
-            ShowMenu();
         }
 
         static void SaveMatrix()
@@ -239,16 +226,12 @@ namespace EisenhowerMain
             matrix.AddItem("(testing not important, not urgent)", deadlineNotUrgent);
             matrix.SaveItemsToFile("list.csv");
             display.Print("List generated and saved to list.csv, type \"Matrix\" to display");
-            ShowMenu();
-            //ChooseMenuOption(matrix);
         }
 
         static void LoadMatrix()
         {
             matrix.AddItemsFromFile("list.csv");
             display.Print("List loaded from list.csv, type \"Matrix\" to display");
-            ShowMenu();
-            //ChooseMenuOption(matrix);
         }
 
     }
