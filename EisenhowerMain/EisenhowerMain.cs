@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data;
-using Spectre.Console;
 
 namespace EisenhowerMain
 {
@@ -56,19 +54,19 @@ namespace EisenhowerMain
                     ShowMenu(matrix, display, getInput);
                     break;
                 case "Archive":
-                    ArchiveItems(matrix, display, getInput);
+                    ArchiveItems(matrix);
                     ShowMenu(matrix, display, getInput);
                     break;
                 case "Matrix":
-                    ShowMatrix2(matrix, display, getInput);
+                    ShowMatrix2(matrix, display);
                     ShowMenu(matrix, display, getInput);
                     break;
                 case "Save":
-                    SaveMatrix(matrix, display, getInput);
+                    SaveMatrix(matrix, display);
                     ShowMenu(matrix, display, getInput);
                     break;
                 case "Load":
-                    LoadMatrix(matrix, display, getInput);
+                    LoadMatrix(matrix, display);
                     ShowMenu(matrix, display, getInput);
                     break;
                 case "Menu":
@@ -168,14 +166,14 @@ namespace EisenhowerMain
             quarter.GetItems().RemoveAt(index);
         }
 
-        static void ArchiveItems(TodoMatrix matrix, Display display, Input getInput)
+        static void ArchiveItems(TodoMatrix matrix)
         {
             foreach (var quarter in matrix.GetQuarters())
             {
                 quarter.Value.GetItems().RemoveAll(item => item._isDone);
             }
         }
-
+        /*
         static void ShowMatrix(TodoMatrix matrix, Display display, Input getInput)
         {
             int ItemLength = 10;
@@ -215,13 +213,14 @@ namespace EisenhowerMain
 
             AnsiConsole.Write(table);
         }
+        */
 
-        static void ShowMatrix2(TodoMatrix matrix, Display display, Input getInput)
+        static void ShowMatrix2(TodoMatrix matrix, Display display)
         {
             display.PrintMatrix(matrix);
         }
 
-        static void SaveMatrix(TodoMatrix matrix, Display display, Input getInput)
+        static void SaveMatrix(TodoMatrix matrix, Display display)
         {
             DateTime currentTime = DateTime.Now;
             DateTime deadlineNotUrgent = currentTime.AddDays(25);
@@ -235,7 +234,7 @@ namespace EisenhowerMain
             display.Print("List generated and saved to list.csv, type \"Matrix\" to display");
         }
 
-        static void LoadMatrix(TodoMatrix matrix, Display display, Input getInput)
+        static void LoadMatrix(TodoMatrix matrix, Display display)
         {
             matrix.AddItemsFromFile("list.csv");
             display.Print("List loaded from list.csv, type \"Matrix\" to display");
