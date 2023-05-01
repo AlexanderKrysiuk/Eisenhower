@@ -15,19 +15,20 @@ namespace EisenhowerCore
 
             // section for saving file //
 
-            matrix.AddItem("(testing important, urgent)", deadlineUrgent, true);
-            matrix.AddItem("(testing important, not urgent)", deadlineNotUrgent, true);
-            matrix.AddItem("(important, not urgent 2)", deadlineNotUrgent, true);
-            matrix.AddItem("(testing not important, urgent)", deadlineUrgent);
-            matrix.AddItem("(testing not important, not urgent)", deadlineNotUrgent);
-            matrix.SaveItemsToFile("h.csv");
+           // matrix.AddItem("(testing important, urgent)", deadlineUrgent, true);
+            //matrix.AddItem("(testing important, not urgent)", deadlineNotUrgent, true);
+            //matrix.AddItem("(important, not urgent 2)", deadlineNotUrgent, true);
+            //matrix.AddItem("(testing not important, urgent)", deadlineUrgent);
+            //matrix.AddItem("(testing not important, not urgent)", deadlineNotUrgent);
+            //matrix.SaveItemsToFile("h.csv");
 
             // endsection //
 
             matrix.AddItemsFromFile("h.csv");
             Display display = new Display();
+            Input input = new Input();
             display.PrintMatrix(matrix);
-            Console.ReadLine();
+            string getInput = input.GetInput();
         }
     }
 }
