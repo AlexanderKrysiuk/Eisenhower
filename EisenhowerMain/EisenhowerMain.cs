@@ -6,7 +6,6 @@ namespace EisenhowerMain
 {
     public class EisenhowerMain
     {
-        static TodoMatrix Matrix = new TodoMatrix();
         static public void Main(String[] args)
         {
             TodoMatrix matrix = new TodoMatrix();
