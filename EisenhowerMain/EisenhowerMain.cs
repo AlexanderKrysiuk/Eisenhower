@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using Spectre.Console;
 
 namespace EisenhowerMain
@@ -42,7 +41,6 @@ namespace EisenhowerMain
                     break;
                 case "Show":
                     ShownToDoItemsByStatus();
-                    ShowMenu();
                     break;
                 case "Add":
                     AddItem();
@@ -65,7 +63,6 @@ namespace EisenhowerMain
                     break;
                 case "Save":
                     SaveMatrix();
-                    ShowMenu();
                     break;
                 case "Load":
                     LoadMatrix();
@@ -81,10 +78,13 @@ namespace EisenhowerMain
                     ChooseMenuOption();
                     break;
             }
+            ShowMenu();
         }
 
         static void Exit()
         {
+            ArchiveItems();
+            SaveMatrix();
             display.Print("Bye!");
             Environment.Exit(0);
         }
@@ -208,16 +208,16 @@ namespace EisenhowerMain
 
         static void ShowMatrix()
         {
-            int ItemLength = 10;
+            int itemLength = 10;
             foreach (var quarter in matrix.GetQuarters())
             {
                 int index = 0;
                 foreach (var item in quarter.Value.GetItems())
                 {
-                    string Length = index + ". " + item;
-                    if (Length.Length > ItemLength)
+                    string length = index + ". " + item;
+                    if (length.Length > itemLength)
                     {
-                        ItemLength = Length.Length;
+                        itemLength = length.Length;
                     }
                 }
             }
@@ -242,18 +242,18 @@ namespace EisenhowerMain
             
 
             table.AddRow(important, IU, IN);
-            table.AddRow("-", new string('-',ItemLength),new string('-',ItemLength));
+            table.AddRow("-", new string('-',itemLength),new string('-',itemLength));
             table.AddRow(notimportant, NU, NN);
 
             AnsiConsole.Write(table);
-            ShowMenu();
         }
 
-        static void ShowMatrix2()
+        
+        /*static void ShowMatrix2()
         {
             display.PrintMatrix(matrix);
             ShowMenu();
-        }
+        }*/
 
         static void SaveMatrix()
         {
