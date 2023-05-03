@@ -1,47 +1,39 @@
 ﻿using System;
-using System.Data;
 using Spectre.Console;
 
 namespace EisenhowerMain
 {
     public class EisenhowerMain
     {
-        static TodoMatrix Matrix = new TodoMatrix();
+        static TodoMatrix matrix = new TodoMatrix();
+        static Display display = new Display();
+        static Input getInput = new Input();
+
         static public void Main(String[] args)
         {
+            display.Print("Welcome to Eisenhower Matrix!");
             ShowMenu();
-            /*
-            TodoMatrix matrix = new TodoMatrix();
-            DateTime currentTime = DateTime.Now;
-            DateTime deadlineNotUrgent = currentTime.AddDays(-10);
-            DateTime deadlineUrgent = currentTime.AddDays(-1);
-            matrix.AddItem("(testing important, urgent)", deadlineUrgent, true);
-            matrix.AddItem("(testing important, not urgent)", deadlineNotUrgent, true);
-            matrix.AddItem("(testing important, not urgent 2)", deadlineNotUrgent, true);
-            matrix.AddItem("(testing not important, urgent)", deadlineUrgent);
-            matrix.AddItem("(testing not important, not urgent)", deadlineNotUrgent);
-            Console.Write(matrix.ToString());
-            Console.ReadLine();
-            */
         }
 
         static void ShowMenu()
         {
-            Console.WriteLine("Welcome to Eisenhower Matrix App. What would You like to do?\n" +
+            display.Print("\nWhat would you like to do? (Press q to quit any time)\n" +
                               "Exit - exit application\n" +
                               "Show - show TODO items by status\n" +
                               "Add - add an item\n" +
                               "Mark - mark item done/undone\n" +
                               "Remove - remove item\n" +
                               "Archive - archive items (remove all done)\n" +
-                              "Matrix - Show Whole Matrix\n" +
+                              "Matrix - Show whole matrix\n" +
+                              "Save - save sample list to list.csv\n" +
+                              "Load - load sample list from list.csv\n" +
                               "Menu - show menu");
             ChooseMenuOption();
         }
 
         static void ChooseMenuOption()
         {
-            string userInput = Console.ReadLine();
+            string userInput = getInput.GetInput();
             switch (userInput)
             {
                 case "Exit":
@@ -49,51 +41,57 @@ namespace EisenhowerMain
                     break;
                 case "Show":
                     ShownToDoItemsByStatus();
-                    ChooseMenuOption();
                     break;
                 case "Add":
                     AddItem();
-                    ChooseMenuOption();
+                    ShowMatrix();
                     break;
                 case "Mark":
                     MarkItem();
-                    ChooseMenuOption();
+                    ShowMatrix();
                     break;
                 case "Remove": 
                     RemoveItem();
-                    ChooseMenuOption();
+                    ShowMatrix();
                     break;
                 case "Archive":
                     ArchiveItems();
-                    ChooseMenuOption();
+                    ShowMatrix();
                     break;
                 case "Matrix":
                     ShowMatrix();
-                    ChooseMenuOption();
+                    break;
+                case "Save":
+                    SaveMatrix();
+                    break;
+                case "Load":
+                    LoadMatrix();
+                    ShowMatrix();
                     break;
                 case "Menu":
                     ShowMenu();
-                    ChooseMenuOption();
                     break;
                 default:
-                    Console.Clear();
+                    //Console.Clear();
                     //ShowMenu();
-                    Console.WriteLine("Please provide right number");
+                    display.Print("Please provide the right command");
                     ChooseMenuOption();
                     break;
             }
+            ShowMenu();
         }
 
         static void Exit()
         {
             ArchiveItems();
-            Matrix.SaveItemsToFile("Database");
-            Console.WriteLine("The data has been successfully saved to the CSV file");
+            SaveMatrix();
+            display.Print("Bye!");
+            Environment.Exit(0);
         }
 
-        static void QuarterOptions()
+        static void QuarterOptions(Display display)
         {
-            Console.WriteLine("Please provide symbol of status You would like to use:\n" +
+            display.Print("Please provide symbol of status you would like to use:\n" +
                               "IU - urgent & important items\n" +
                               "IN - not urgent & important items\n" +
                               "NU - urgent & not important items\n" +
@@ -102,9 +100,9 @@ namespace EisenhowerMain
 
         static void ShownToDoItemsByStatus()
         {
-            QuarterOptions();
-            string option = Console.ReadLine();
-            TodoQuarter quarter = Matrix.GetQuarter(option);
+            QuarterOptions(display);
+            string option = getInput.GetInput();
+            TodoQuarter quarter = matrix.GetQuarter(option);
             int index = 1;
             foreach (var item in quarter.GetItems() )
             {
@@ -133,28 +131,52 @@ namespace EisenhowerMain
 
         static void AddItem()
         {
-            Console.WriteLine("Please provide title of the task:");
-            string title = Console.ReadLine();
-            Console.WriteLine("Please provide deadline data in format yyyy-mm-dd");
-            string datestring = Console.ReadLine();
+            display.Print("Please provide title of the task.\nMake sure not to use the characters '{' and '}'");
+            string title = getInput.GetInput();
+            display.Print("Please provide deadline data in format yyyy-mm-dd");
+            string datestring = getInput.GetInput();
             DateTime data = DateTime.Parse(datestring);
-            Console.WriteLine("Is this item important? parse true or false");
-            bool isImportant = Convert.ToBoolean(Console.ReadLine());
+            display.Print("Is this item important? (y/n)");
+            bool isImportant = GetYesOrNo();
+            //bool isImportant = Convert.ToBoolean(getInput.GetInput());
             
-            Matrix.AddItem(title,data,isImportant);
+            matrix.AddItem(title,data,isImportant);
+            display.Print("Added item.");
+        }
+
+        static bool GetYesOrNo()
+        {
+            string input = getInput.GetInput();
+            while (true)
+            {
+                if (input.ToUpper() == "Y")
+                {
+                    return true;
+                }
+                else if (input.ToUpper() == "N")
+                {
+                    return false;
+                }
+                else
+                {
+                    display.Print("Please enter y or n");
+                    input = getInput.GetInput();
+                }
+            }
         }
 
         static void MarkItem()
         {
-            Console.WriteLine("Please provide title of the task to mark:");
-            string title = Console.ReadLine();
-            foreach (var quarter in Matrix.GetQuarters())
+            display.Print("Please provide title of the task to mark.");
+            string title = getInput.GetInput();
+            foreach (var quarter in matrix.GetQuarters())
             {
                 foreach (var item in quarter.Value.GetItems())
                 {
                     if (title == item.Get_title())
                     {
                         item.Mark();
+                        display.Print("Marked item.");
                         break;
                     }
                 }
@@ -163,17 +185,22 @@ namespace EisenhowerMain
 
         static void RemoveItem()
         {
-            QuarterOptions();
-            string option = Console.ReadLine();
-            TodoQuarter quarter = Matrix.GetQuarter(option);            
-            Console.WriteLine("Please provide index of the task to remove:");
-            int index = Convert.ToInt32(Console.ReadLine()) - 1;
-            quarter.GetItems().RemoveAt(index);
+            QuarterOptions(display);
+            string option = getInput.GetInput();
+            TodoQuarter quarter = matrix.GetQuarter(option);            
+            display.Print("Please provide the number of the task to remove (starting from 1):");
+            int index = Convert.ToInt32(getInput.GetInput()) - 1;
+            display.Print($"Are you sure you want to remove {quarter.GetItem(index).Get_title()} (y/n)?");
+            bool confirmation = GetYesOrNo();
+            if (confirmation) {
+                quarter.GetItems().RemoveAt(index);
+                display.Print("Removed item.");
+            }
         }
 
         static void ArchiveItems()
         {
-            foreach (var quarter in Matrix.GetQuarters())
+            foreach (var quarter in matrix.GetQuarters())
             {
                 quarter.Value.GetItems().RemoveAll(item => item._isDone);
             }
@@ -181,27 +208,29 @@ namespace EisenhowerMain
 
         static void ShowMatrix()
         {
-            int ItemLength = 10;
-            foreach (var quarter in Matrix.GetQuarters())
+            int itemLength = 10;
+            foreach (var quarter in matrix.GetQuarters())
             {
                 int index = 0;
                 foreach (var item in quarter.Value.GetItems())
                 {
-                    string Length = index + ". " + item;
-                    if (Length.Length > ItemLength)
+                    string length = index + ". " + item;
+                    if (length.Length > itemLength)
                     {
-                        ItemLength = Length.Length;
+                        itemLength = length.Length;
                     }
                 }
             }
-            
-            string important = "Important";
-            string notimportant = "Not Important";
-            
-            //string IU = Matrix.GetQuarter("IU").TurnListIntoString();
-            //string IN = Matrix.GetQuarter("IN").TurnListIntoString();
-            //string NU = Matrix.GetQuarter("NU").TurnListIntoString();
-            //string NN = Matrix.GetQuarter("NN").TurnListIntoString();
+
+            string important = "I\nm\np\no\nr\nt\na\nn\nt";
+            string notimportant = "N\no\nt\n \nI\nm\np\no\nr\nt\na\nn\nt";
+
+
+            string IU = matrix.GetQuarter("IU").TurnListIntoString();
+            string IN = matrix.GetQuarter("IN").TurnListIntoString();
+            string NU = matrix.GetQuarter("NU").TurnListIntoString();
+            string NN = matrix.GetQuarter("NN").TurnListIntoString();
+
 
             var table = new Table();
             
@@ -211,34 +240,40 @@ namespace EisenhowerMain
             table.AddColumn("Urgent");
             table.AddColumn("Not Urgent");
             
-            for (int index = 0; index < important.Length; index++)
-            {
-                string taskIU;
-                TodoQuarter quarterIU = Matrix.GetQuarter("IU");
-                if (index >= 0 && index < quarterIU.GetItems().Count)
-                {
-                    TodoItem IUitem = quarterIU.GetItem(index);
-                    taskIU = IUitem.ToString();
-                }
-                else
-                {
-                    taskIU = "";
-                }
-                
-                
-                
-                string character = important[index].ToString();
-                table.AddRow(character, " 05-10 Spanie","Jakiś inny string");
-            }
-            table.AddEmptyRow();
 
-            for (int index = 0; index < notimportant.Length; index++)
-            {
-                string character = notimportant[index].ToString();
-                table.AddRow(character, "kolejny string", "następny string");
-            }
+            table.AddRow(important, IU, IN);
+            table.AddRow("-", new string('-',itemLength),new string('-',itemLength));
+            table.AddRow(notimportant, NU, NN);
 
             AnsiConsole.Write(table);
         }
+
+        
+        /*static void ShowMatrix2()
+        {
+            display.PrintMatrix(matrix);
+            ShowMenu();
+        }*/
+
+        static void SaveMatrix()
+        {
+            DateTime currentTime = DateTime.Now;
+            DateTime deadlineNotUrgent = currentTime.AddDays(25);
+            DateTime deadlineUrgent = currentTime.AddDays(1);
+            matrix.AddItem("(testing important, urgent)", deadlineUrgent, true);
+            matrix.AddItem("(testing important, not urgent)", deadlineNotUrgent, true);
+            matrix.AddItem("(important, not urgent 2)", deadlineNotUrgent, true);
+            matrix.AddItem("(testing not important, urgent)", deadlineUrgent);
+            matrix.AddItem("(testing not important, not urgent)", deadlineNotUrgent);
+            matrix.SaveItemsToFile("list.csv");
+            display.Print("List generated and saved to list.csv, type \"Matrix\" to display");
+        }
+
+        static void LoadMatrix()
+        {
+            matrix.AddItemsFromFile("list.csv");
+            display.Print("List loaded from list.csv, type \"Matrix\" to display");
+        }
+
     }
 }
