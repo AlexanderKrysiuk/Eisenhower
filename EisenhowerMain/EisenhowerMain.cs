@@ -18,16 +18,17 @@ namespace EisenhowerMain
         static void ShowMenu()
         {
             display.Print("\nWhat would you like to do? (Press q to quit any time)\n" +
-                              "Exit - exit application\n" +
-                              "Show - show TODO items by status\n" +
-                              "Add - add an item\n" +
-                              "Mark - mark item done/undone\n" +
-                              "Remove - remove item\n" +
-                              "Archive - archive items (remove all done)\n" +
-                              "Matrix - Show whole matrix\n" +
-                              "Save - save sample list to list.csv\n" +
-                              "Load - load sample list from list.csv\n" +
-                              "Menu - show menu");
+                          "Exit - exit application\n" +
+                          "Show - show TODO items by status\n" +
+                          "Add - add an item\n" +
+                          "Mark - mark item done/undone\n" +
+                          "Remove - remove item\n" +
+                          "Archive - archive items (remove all done)\n" +
+                          "Matrix - Show whole matrix\n" +
+                          "Save - save sample list to list.csv\n" +
+                          "Load - load sample list from list.csv\n" +
+                          "Demo - generates demo list\n" +
+                          "Menu - show menu");
             ChooseMenuOption();
         }
 
@@ -70,6 +71,9 @@ namespace EisenhowerMain
                     break;
                 case "Menu":
                     ShowMenu();
+                    break;
+                case "Demo":
+                    GenerateDemoList();
                     break;
                 default:
                     //Console.Clear();
@@ -248,23 +252,8 @@ namespace EisenhowerMain
             AnsiConsole.Write(table);
         }
 
-        
-        /*static void ShowMatrix2()
-        {
-            display.PrintMatrix(matrix);
-            ShowMenu();
-        }*/
-
         static void SaveMatrix()
         {
-            DateTime currentTime = DateTime.Now;
-            DateTime deadlineNotUrgent = currentTime.AddDays(25);
-            DateTime deadlineUrgent = currentTime.AddDays(1);
-            matrix.AddItem("(testing important, urgent)", deadlineUrgent, true);
-            matrix.AddItem("(testing important, not urgent)", deadlineNotUrgent, true);
-            matrix.AddItem("(important, not urgent 2)", deadlineNotUrgent, true);
-            matrix.AddItem("(testing not important, urgent)", deadlineUrgent);
-            matrix.AddItem("(testing not important, not urgent)", deadlineNotUrgent);
             matrix.SaveItemsToFile("list.csv");
             display.Print("List generated and saved to list.csv, type \"Matrix\" to display");
         }
@@ -279,5 +268,18 @@ namespace EisenhowerMain
             display.Print("List loaded from list.csv, type \"Matrix\" to display");
         }
 
+        static void GenerateDemoList()
+        {
+            DateTime currentTime = DateTime.Now;
+            DateTime deadlineNotUrgent = currentTime.AddDays(25);
+            DateTime deadlineUrgent = currentTime.AddDays(1);
+            matrix.AddItem("(testing important, urgent)", deadlineUrgent, true);
+            matrix.AddItem("(testing important, not urgent)", deadlineNotUrgent, true);
+            matrix.AddItem("(important, not urgent 2)", deadlineNotUrgent, true);
+            matrix.AddItem("(testing not important, urgent)", deadlineUrgent);
+            matrix.AddItem("(testing not important, not urgent)", deadlineNotUrgent);
+            matrix.SaveItemsToFile("list.csv");
+            display.Print("List generated and saved to list.csv, type \"Matrix\" to display");
+        }
     }
 }
