@@ -271,6 +271,10 @@ namespace EisenhowerMain
 
         static void LoadMatrix()
         {
+            foreach (var quarter in matrix.GetQuarters())
+            {
+                quarter.Value.GetItems().Clear();
+            }
             matrix.AddItemsFromFile("list.csv");
             display.Print("List loaded from list.csv, type \"Matrix\" to display");
         }
