@@ -1,4 +1,6 @@
 ﻿using System;
+using EisenhowerMain.Model;
+using EisenhowerMain.Manager;
 using Spectre.Console;
 
 namespace EisenhowerMain
@@ -8,9 +10,13 @@ namespace EisenhowerMain
         static TodoMatrix matrix = new TodoMatrix();
         static Display display = new Display();
         static Input getInput = new Input();
+        static MatrixDbManager manager = new MatrixDbManager();
+        static IItemsDao itemsDao = new MssqlItemsDao(manager.ConnectionString);
+        static bool IsConnectedToDb = false;
+
 
         static public void Main(String[] args)
-        {
+        { 
             display.Print("Welcome to Eisenhower Matrix!");
             ShowMenu();
         }
@@ -19,6 +25,7 @@ namespace EisenhowerMain
         {
             display.Print("\nWhat would you like to do? (Press q to quit any time)\n" +
                               "Exit - exit application\n" +
+                              "Connect - connect to database\n" +
                               "Show - show TODO items by status\n" +
                               "Add - add an item\n" +
                               "Mark - mark item done/undone\n" +
@@ -38,6 +45,9 @@ namespace EisenhowerMain
             {
                 case "Exit":
                     Exit();
+                    break;
+                case "Connect":
+                    ConnectToDb();
                     break;
                 case "Show":
                     ShownToDoItemsByStatus();
@@ -87,6 +97,13 @@ namespace EisenhowerMain
             SaveMatrix();
             display.Print("Bye!");
             Environment.Exit(0);
+        }
+
+        static void ConnectToDb()
+        {
+            manager.Connect();
+            IsConnectedToDb = true;
+            display.Print("Connected to database");
         }
 
         static void QuarterOptions(Display display)
@@ -248,31 +265,47 @@ namespace EisenhowerMain
             AnsiConsole.Write(table);
         }
 
-        
-        /*static void ShowMatrix2()
-        {
-            display.PrintMatrix(matrix);
-            ShowMenu();
-        }*/
-
         static void SaveMatrix()
         {
-            DateTime currentTime = DateTime.Now;
-            DateTime deadlineNotUrgent = currentTime.AddDays(25);
-            DateTime deadlineUrgent = currentTime.AddDays(1);
-            matrix.AddItem("(testing important, urgent)", deadlineUrgent, true);
-            matrix.AddItem("(testing important, not urgent)", deadlineNotUrgent, true);
-            matrix.AddItem("(important, not urgent 2)", deadlineNotUrgent, true);
-            matrix.AddItem("(testing not important, urgent)", deadlineUrgent);
-            matrix.AddItem("(testing not important, not urgent)", deadlineNotUrgent);
-            matrix.SaveItemsToFile("list.csv");
-            display.Print("List generated and saved to list.csv, type \"Matrix\" to display");
+            if (IsConnectedToDb)
+            {
+                SaveMatrixDao();
+                display.Print("Saved to database");
+            }
+            else
+            {
+                matrix.SaveItemsToFile("list.csv");
+                display.Print("Saved to list.csv");
+            }
+            
+        }
+
+        static void SaveMatrixDao()
+        {
+            display.Print("Overwrite current database entries? (y/n)");
+            bool overwrite = GetYesOrNo();
+            matrix.SaveItemsToDatabase(itemsDao, overwrite);
         }
 
         static void LoadMatrix()
         {
-            matrix.AddItemsFromFile("list.csv");
-            display.Print("List loaded from list.csv, type \"Matrix\" to display");
+            if (IsConnectedToDb)
+            {
+                LoadMatrixDao();
+                display.Print("List loaded from database");
+            }
+            else
+            {
+                matrix.AddItemsFromFile("list.csv");
+                display.Print("List loaded from list.csv");
+            }
+        }
+
+        static void LoadMatrixDao()
+        {
+            display.Print("Overwrite current matrix? (y/n)");
+            bool overwrite = GetYesOrNo();
+            itemsDao.Load(matrix, overwrite);
         }
 
     }
