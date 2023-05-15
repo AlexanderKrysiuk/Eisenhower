@@ -38,9 +38,14 @@ namespace EisenhowerMain
             _isDone = false;
         }
 
+        public bool Get_Status()
+        {
+            return _isDone;
+        }
+
         public override string ToString()
         {
-            string doneStatus = _isDone ? "[x]" : "[ ]";
+            string doneStatus = _isDone ? "{x}" : "{ }";
             string formattedDeadline = _deadline.ToString("d-M");
             return $"{doneStatus} {formattedDeadline} {_title}";
         }

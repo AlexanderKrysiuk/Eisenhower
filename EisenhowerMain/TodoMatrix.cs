@@ -1,10 +1,6 @@
-using EisenhowerCore;
-using EisenhowerMain;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq.Expressions;
-using System.Text.RegularExpressions;
 using System.Globalization;
 
 namespace EisenhowerMain
@@ -54,9 +50,9 @@ namespace EisenhowerMain
 
         public void AddItemsFromFile(string filename)
         {
-            using(StreamReader reader = new StreamReader(filename))
+            using (StreamReader reader = new StreamReader(filename))
             {
-                while(!reader.EndOfStream)
+                while (!reader.EndOfStream)
                 {
                     string text = reader.ReadLine();
                     string[] quarters;
@@ -68,8 +64,8 @@ namespace EisenhowerMain
                             return;
                         }
                         string importance = quarter[1].ToString();
-                        string entries = quarter.Remove(0,4);
-                        string[] items = entries.Split("] ");
+                        string entries = quarter.Remove(0, 4);
+                        string[] items = entries.Split("} ");
                         foreach (string item in items)
                         {
                             if (item.Length > 5)
@@ -78,7 +74,7 @@ namespace EisenhowerMain
                                 string itemName = GetItemName(item);
 
                                 DateTime deadline = GetItemDeadline(item);
-                                
+
                                 if (importance == "I")
                                 {
                                     AddItem(itemName, deadline, true);
@@ -140,9 +136,9 @@ namespace EisenhowerMain
         private string GetItemName(string item)
         {
             int offset = item.Split(" ")[0].Length;
-            string itemName = item.Substring(offset, item.Length-offset);
+            string itemName = item.Substring(offset, item.Length - offset);
 
-            if (itemName[itemName.Length - 2] == '[')
+            if (itemName[itemName.Length - 2] == '{')
             {
                 itemName = itemName.Substring(0, itemName.Length - 2);
             }
@@ -163,7 +159,7 @@ namespace EisenhowerMain
                     text += entry.Value.ToString();
                     text += ";";
                 }
-                    writer.WriteLine(text);
+                writer.WriteLine(text);
             }
         }
 

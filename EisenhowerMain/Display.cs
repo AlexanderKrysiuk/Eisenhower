@@ -38,7 +38,7 @@ namespace EisenhowerMain
             }
         }
 
-        private void Print(string text)
+        public void Print(string text)
         {
             Console.WriteLine(text);
         }

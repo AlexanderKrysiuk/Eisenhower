@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using EisenhowerMain;
 
 namespace EisenhowerMain
 {
@@ -53,6 +51,40 @@ namespace EisenhowerMain
             }
 
             return result.TrimEnd();
+        }
+        
+        public string TurnListIntoString()
+        {
+            int index = 1;
+            string items = "";
+            foreach (var item in GetItems())
+            {
+                if (item.Get_Status() == false)
+                {
+                    DateTime currentTime = DateTime.Now;
+                    TimeSpan difference = currentTime.Subtract(item.Get_deadline());
+            
+                    switch (difference.Days)
+                    {
+                        case var expression when difference.Days > 3:
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            break;
+                        case var expression when difference.Days <= 3:
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            break;
+                        case var expression when difference.Days == 0:
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            break;
+                        default:
+                            Console.ForegroundColor = ConsoleColor.White;
+                            break;
+                    }
+                }
+                items += index + ". " + item +"\n";
+                index++;
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            return items;
         }
     }
 

@@ -6,8 +6,9 @@ namespace EisenhowerMain
 {
     public class Input
     {
-        public Input() { 
-        
+        public Input()
+        {
+
         }
 
         public string GetInput()
