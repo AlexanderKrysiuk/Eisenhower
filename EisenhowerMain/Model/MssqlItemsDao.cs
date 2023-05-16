@@ -18,21 +18,16 @@ namespace EisenhowerMain.Model
         {
             try
             {
-
                 using var connection = new SqlConnection(_connectionString);
                 connection.Open();
-
                 using var command = connection.CreateCommand();
                 command.CommandType = CommandType.Text;
-
                 string saveTodoItemSql = saveItemSql();
                 command.CommandText = saveTodoItemSql;
                 command.Parameters.AddWithValue("@Title", title);
                 command.Parameters.AddWithValue("@Deadline", deadline);
                 command.Parameters.AddWithValue("@Importance", importance);
                 using var reader = command.ExecuteReader();
-                Console.WriteLine("saved");
-
             }
             catch (SqlException exception)
             {
@@ -59,7 +54,6 @@ VALUES (@Title, @Deadline, @Importance);
                     @"DELETE FROM items;";
                 command.CommandText = overwriteSql;
                 using var reader = command.ExecuteReader();
-                Console.WriteLine("deleted");
             }
                         
             catch (SqlException exception)
