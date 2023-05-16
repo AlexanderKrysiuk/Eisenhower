@@ -8,8 +8,10 @@ namespace EisenhowerMain.Model
 {
     public interface IItemsDao
     {
-        public void Save(string title, DateTime deadline, bool importance, bool overwrite);
+        public void Save(string title, DateTime deadline, bool importance);
         public void Load(TodoMatrix todoMatrix, bool overwrite);
+
+        public void OverwriteDb();
 
 
     }

@@ -14,20 +14,24 @@ namespace EisenhowerMain.Model
             _connectionString = connectionString;
         }
 
-        public void Save(string title, DateTime deadline, bool importance, bool overwrite)
+        public void Save(string title, DateTime deadline, bool importance)
         {
             try
             {
+
                 using var connection = new SqlConnection(_connectionString);
                 connection.Open();
+
                 using var command = connection.CreateCommand();
                 command.CommandType = CommandType.Text;
-                string saveTodoItemSql = saveItemSql(overwrite);
+
+                string saveTodoItemSql = saveItemSql();
                 command.CommandText = saveTodoItemSql;
                 command.Parameters.AddWithValue("@Title", title);
                 command.Parameters.AddWithValue("@Deadline", deadline);
                 command.Parameters.AddWithValue("@Importance", importance);
                 using var reader = command.ExecuteReader();
+                Console.WriteLine("saved");
 
             }
             catch (SqlException exception)
@@ -36,34 +40,54 @@ namespace EisenhowerMain.Model
             }
         }
 
-        private string saveItemSql(bool overwrite) {
-            if (!overwrite) {
-                return @"
-INSERT INTO items (title, deadline, isImportant)
-VALUES (@Title, @Deadline, @Importance);
-";  }
-            return @"DELETE FROM items;
+        private string saveItemSql() {
+            return @"
 INSERT INTO items (title, deadline, isImportant)
 VALUES (@Title, @Deadline, @Importance);
 ";
         }
+
+        public void OverwriteDb()
+        {
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                connection.Open();
+                using var command = connection.CreateCommand();
+                command.CommandType = CommandType.Text;
+                string overwriteSql =
+                    @"DELETE FROM items;";
+                command.CommandText = overwriteSql;
+                using var reader = command.ExecuteReader();
+                Console.WriteLine("deleted");
+            }
+                        
+            catch (SqlException exception)
+            {
+                throw;
+            }
+
+        }
+
         public void Load(TodoMatrix todoMatrix, bool overwrite)
         {
             try
             {
+                if (overwrite)
+                {
+                    todoMatrix.RemoveAll();
+                }
                 var todoItems = new List<TodoItem>();
 
                 using var connection = new SqlConnection(_connectionString);
                 connection.Open();
                 using var command = connection.CreateCommand();
                 command.CommandType = CommandType.Text;
-
                 string selectItemsSql =
                     @"
 SELECT title, deadline, isImportant
 FROM items;
 ";
-
                 command.CommandText = selectItemsSql;
 
                 using var reader = command.ExecuteReader();
@@ -73,6 +97,7 @@ FROM items;
                     string title = (string)reader["title"];
                     bool importance = (bool)reader["isImportant"];
                     DateTime deadline = Convert.ToDateTime(reader["deadline"]);
+
                     todoMatrix.AddItem(title, deadline, importance);
                 }
             }
