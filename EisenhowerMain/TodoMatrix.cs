@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
+using EisenhowerMain.Model;
 
 namespace EisenhowerMain
 {
@@ -160,6 +161,22 @@ namespace EisenhowerMain
                     text += ";";
                 }
                 writer.WriteLine(text);
+            }
+        }
+
+        public void SaveItemsToDatabase(IItemsDao itemsDao, bool overwrite)
+        {
+            foreach (KeyValuePair<string, TodoQuarter> entry in todoQuarters)
+            {
+                bool importance = false;
+                if (entry.Key[0] == 'I')
+                {
+                    importance = true;
+                }
+                foreach (TodoItem item in entry.Value.GetItems())
+                {
+                    itemsDao.Save(item.Get_title(), item.Get_deadline(), importance, overwrite);
+                }
             }
         }
 

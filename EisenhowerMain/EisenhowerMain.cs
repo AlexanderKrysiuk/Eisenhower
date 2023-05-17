@@ -1,4 +1,6 @@
 ﻿using System;
+using EisenhowerMain.Model;
+using EisenhowerMain.Manager;
 using Spectre.Console;
 
 namespace EisenhowerMain
@@ -8,9 +10,13 @@ namespace EisenhowerMain
         static TodoMatrix matrix = new TodoMatrix();
         static Display display = new Display();
         static Input getInput = new Input();
+        static MatrixDbManager manager = new MatrixDbManager();
+        static IItemsDao itemsDao = new MssqlItemsDao(manager.ConnectionString);
+        static bool IsConnectedToDb = false;
+
 
         static public void Main(String[] args)
-        {
+        { 
             display.Print("Welcome to Eisenhower Matrix!");
             ShowMenu();
         }
@@ -18,17 +24,17 @@ namespace EisenhowerMain
         static void ShowMenu()
         {
             display.Print("\nWhat would you like to do? (Press q to quit any time)\n" +
-                          "Exit - exit application\n" +
-                          "Show - show TODO items by status\n" +
-                          "Add - add an item\n" +
-                          "Mark - mark item done/undone\n" +
-                          "Remove - remove item\n" +
-                          "Archive - archive items (remove all done)\n" +
-                          "Matrix - Show whole matrix\n" +
-                          "Save - save sample list to list.csv\n" +
-                          "Load - load sample list from list.csv\n" +
-                          "Demo - generates demo list\n" +
-                          "Menu - show menu");
+                              "Exit - exit application\n" +
+                              "Connect - connect to database\n" +
+                              "Show - show TODO items by status\n" +
+                              "Add - add an item\n" +
+                              "Mark - mark item done/undone\n" +
+                              "Remove - remove item\n" +
+                              "Archive - archive items (remove all done)\n" +
+                              "Matrix - Show whole matrix\n" +
+                              "Save - save sample list to list.csv\n" +
+                              "Load - load sample list from list.csv\n" +
+                              "Menu - show menu");
             ChooseMenuOption();
         }
 
@@ -39,6 +45,9 @@ namespace EisenhowerMain
             {
                 case "Exit":
                     Exit();
+                    break;
+                case "Connect":
+                    ConnectToDb();
                     break;
                 case "Show":
                     ShownToDoItemsByStatus();
@@ -72,9 +81,6 @@ namespace EisenhowerMain
                 case "Menu":
                     ShowMenu();
                     break;
-                case "Demo":
-                    GenerateDemoList();
-                    break;
                 default:
                     //Console.Clear();
                     //ShowMenu();
@@ -91,6 +97,13 @@ namespace EisenhowerMain
             SaveMatrix();
             display.Print("Bye!");
             Environment.Exit(0);
+        }
+
+        static void ConnectToDb()
+        {
+            manager.Connect();
+            IsConnectedToDb = true;
+            display.Print("Connected to database");
         }
 
         static void QuarterOptions(Display display)
@@ -254,32 +267,46 @@ namespace EisenhowerMain
 
         static void SaveMatrix()
         {
-            matrix.SaveItemsToFile("list.csv");
-            display.Print("List generated and saved to list.csv, type \"Matrix\" to display");
+            if (IsConnectedToDb)
+            {
+                SaveMatrixDao();
+                display.Print("Saved to database");
+            }
+            else
+            {
+                matrix.SaveItemsToFile("list.csv");
+                display.Print("Saved to list.csv");
+            }
+            
+        }
+
+        static void SaveMatrixDao()
+        {
+            display.Print("Overwrite current database entries? (y/n)");
+            bool overwrite = GetYesOrNo();
+            matrix.SaveItemsToDatabase(itemsDao, overwrite);
         }
 
         static void LoadMatrix()
         {
-            foreach (var quarter in matrix.GetQuarters())
+            if (IsConnectedToDb)
             {
-                quarter.Value.GetItems().Clear();
+                LoadMatrixDao();
+                display.Print("List loaded from database");
             }
-            matrix.AddItemsFromFile("list.csv");
-            display.Print("List loaded from list.csv, type \"Matrix\" to display");
+            else
+            {
+                matrix.AddItemsFromFile("list.csv");
+                display.Print("List loaded from list.csv");
+            }
         }
 
-        static void GenerateDemoList()
+        static void LoadMatrixDao()
         {
-            DateTime currentTime = DateTime.Now;
-            DateTime deadlineNotUrgent = currentTime.AddDays(25);
-            DateTime deadlineUrgent = currentTime.AddDays(1);
-            matrix.AddItem("(testing important, urgent)", deadlineUrgent, true);
-            matrix.AddItem("(testing important, not urgent)", deadlineNotUrgent, true);
-            matrix.AddItem("(important, not urgent 2)", deadlineNotUrgent, true);
-            matrix.AddItem("(testing not important, urgent)", deadlineUrgent);
-            matrix.AddItem("(testing not important, not urgent)", deadlineNotUrgent);
-            matrix.SaveItemsToFile("list.csv");
-            display.Print("List generated and saved to list.csv, type \"Matrix\" to display");
+            display.Print("Overwrite current matrix? (y/n)");
+            bool overwrite = GetYesOrNo();
+            itemsDao.Load(matrix, overwrite);
         }
+
     }
 }
