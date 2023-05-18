@@ -32,8 +32,8 @@ namespace EisenhowerMain
                               "Remove - remove item\n" +
                               "Archive - archive items (remove all done)\n" +
                               "Matrix - Show whole matrix\n" +
-                              "Save - save sample list to list.csv\n" +
-                              "Load - load sample list from list.csv\n" +
+                              "Save - save matrix\n" +
+                              "Load - load matrix\n" +
                               "Menu - show menu");
             ChooseMenuOption();
         }
@@ -82,8 +82,6 @@ namespace EisenhowerMain
                     ShowMenu();
                     break;
                 default:
-                    //Console.Clear();
-                    //ShowMenu();
                     display.Print("Please provide the right command");
                     ChooseMenuOption();
                     break;

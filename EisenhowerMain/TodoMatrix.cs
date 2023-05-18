@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
 using EisenhowerMain.Model;
+using System.Drawing.Drawing2D;
 
 namespace EisenhowerMain
 {
@@ -166,6 +167,10 @@ namespace EisenhowerMain
 
         public void SaveItemsToDatabase(IItemsDao itemsDao, bool overwrite)
         {
+            if (overwrite)
+            {
+                itemsDao.OverwriteDb();
+            }
             foreach (KeyValuePair<string, TodoQuarter> entry in todoQuarters)
             {
                 bool importance = false;
@@ -175,7 +180,7 @@ namespace EisenhowerMain
                 }
                 foreach (TodoItem item in entry.Value.GetItems())
                 {
-                    itemsDao.Save(item.Get_title(), item.Get_deadline(), importance, overwrite);
+                    itemsDao.Save(item.Get_title(), item.Get_deadline(), importance);
                 }
             }
         }
@@ -191,6 +196,14 @@ namespace EisenhowerMain
                         entry.Value.GetItems().Remove(item);
                     }
                 }
+            }
+        }
+
+        public void RemoveAll()
+        {
+            foreach (var quarter in GetQuarters())
+            {
+                quarter.Value.GetItems().RemoveAll(item => item != null);
             }
         }
 
