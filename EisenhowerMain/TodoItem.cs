@@ -5,8 +5,8 @@ namespace EisenhowerMain
     public class TodoItem
     {
         // Attributes
-        private readonly string _title;
-        private readonly DateTime _deadline;
+        private string _title;
+        private DateTime _deadline;
         private bool _isDone;
 
         //Constructor
@@ -18,12 +18,12 @@ namespace EisenhowerMain
         }
 
         //Instance Methods
-        public string Get_title()
+        public string GetTitle()
         {
             return _title;
         }
 
-        public DateTime Get_deadline()
+        public DateTime GetDeadline()
         {
             return _deadline;
         }
@@ -38,7 +38,7 @@ namespace EisenhowerMain
             _isDone = false;
         }
 
-        public bool Get_Status()
+        public bool GetStatus()
         {
             return _isDone;
         }

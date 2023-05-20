@@ -6,35 +6,35 @@ namespace NUnitTests;
 public class ToDoItemTests
 {
     [Test]
-    public void GetTitle_ShouldReturn_Title()
+    public void GetTitleFunction_ShouldReturn_EqualTitle()
     {
         //Arrange
         string expectedTitle = "task title";
         TodoItem todoItem = new TodoItem(expectedTitle, DateTime.Now);
 
         //Act
-        string actualTitle = todoItem.Get_title();
+        string actualTitle = todoItem.GetTitle();
 
         //Assert
         Assert.That(actualTitle, Is.EqualTo(expectedTitle));
     }
 
     [Test]
-    public void GetDeadline_ShouldReturn_Deadline()
+    public void GetDeadlineFunction_ShouldReturn_EqualDeadline()
     {
         //Arrange
         DateTime expectedDeadline = DateTime.Now;
         TodoItem todoItem = new TodoItem("2137", expectedDeadline);
 
         //Act
-        DateTime actualDeadline = todoItem.Get_deadline();
+        DateTime actualDeadline = todoItem.GetDeadline();
 
         //Assert
         Assert.That(actualDeadline, Is.EqualTo(expectedDeadline));
     }
 
     [Test]
-    public void MarkedItem_ShouldReturn_True()
+    public void MarkFunction_ShouldReturn_True()
     {
         //Arrange
         TodoItem todoItem = new TodoItem("Rzeczy", DateTime.Now);
@@ -43,11 +43,11 @@ public class ToDoItemTests
         todoItem.Mark();
 
         //Assert
-        Assert.That(todoItem.Get_Status, Is.True);
+        Assert.That(todoItem.GetStatus, Is.True);
     }
 
     [Test]
-    public void UnmarkedItem_ShouldReturn_False()
+    public void UnmarkFunction_ShouldReturn_False()
     {
         //Arrange
         TodoItem todoItem = new TodoItem("JP2", DateTime.Now);
@@ -56,33 +56,46 @@ public class ToDoItemTests
         todoItem.Unmark();
 
         //Assert
-        Assert.That(todoItem.Get_Status, Is.EqualTo(false));
+        Assert.That(todoItem.GetStatus, Is.False);
     }
 
     [Test]
-    public void ToString_ShouldReturn_FormateDstring()
+    public void ToStringFunctionOfDoneItem_ShouldReturn_ProperlyFormattedString()
     {
         //Arrange
-        string title = "Smocze Jaja";
+        string title = "Done Item";
         DateTime dateTime = DateTime.Now;
-        string doneStatus = "{x}";
-        string undoneStatus = "{ }";
         string formattedDate = dateTime.ToString("d-M");
-        string expectedDoneItemString = $"{doneStatus} {formattedDate} {title}";
-        string expectedUndoneItemString = $"{undoneStatus} {formattedDate} {title}";
-        
+        string doneStatus = "{x}";
+        string expected = $"{doneStatus} {formattedDate} {title}";
+
         TodoItem todoItemDone = new TodoItem(title, dateTime);
-        TodoItem todoItemUndone = new TodoItem(title, dateTime);
-        
+
         //Act
         todoItemDone.Mark();
-        string actualDoneItemString = todoItemDone.ToString();
-        string actualUndoneItemString = todoItemUndone.ToString();
-        
+        string actual = todoItemDone.ToString();
+
         //Assert
-        Assert.That(actualDoneItemString, Is.EqualTo(expectedDoneItemString));
-        Assert.That(actualUndoneItemString, Is.EqualTo(expectedUndoneItemString));
-
+        Assert.That(actual, Is.EqualTo(expected));
     }
+    
+    [Test]
+    public void ToStringFunctionOfUoneItem_ShouldReturn_ProperlyFormattedString()
+    {
+        //Arrange
+        string title = "Undone Item";
+        DateTime dateTime = DateTime.Now;
+        string formattedDate = dateTime.ToString("d-M");
+        string doneStatus = "{ }";
+        string expected = $"{doneStatus} {formattedDate} {title}";
 
+        TodoItem todoItemDone = new TodoItem(title, dateTime);
+
+        //Act
+        todoItemDone.Unmark();
+        string actual = todoItemDone.ToString();
+
+        //Assert
+        Assert.That(actual, Is.EqualTo(expected));
+    }
 }
