@@ -29,7 +29,7 @@ namespace EisenhowerMain
 
         public void ArchiveItems()
         {
-            ToDoItems.RemoveAll(item => item._isDone);
+            ToDoItems.RemoveAll(item => item.Get_Status());
         }
 
         public TodoItem GetItem(int index)

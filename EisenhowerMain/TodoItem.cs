@@ -7,7 +7,7 @@ namespace EisenhowerMain
         // Attributes
         private readonly string _title;
         private readonly DateTime _deadline;
-        public bool _isDone;
+        private bool _isDone;
 
         //Constructor
         public TodoItem(string title, DateTime deadline)

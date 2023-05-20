@@ -43,7 +43,7 @@ public class ToDoItemTests
         todoItem.Mark();
 
         //Assert
-        Assert.That(todoItem.Get_Status, Is.EqualTo(true));
+        Assert.That(todoItem.Get_Status, Is.True);
     }
 
     [Test]

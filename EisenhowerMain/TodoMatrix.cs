@@ -186,7 +186,7 @@ namespace EisenhowerMain
             {
                 foreach (TodoItem item in entry.Value.GetItems())
                 {
-                    if (item._isDone == true)
+                    if (item.Get_Status())
                     {
                         entry.Value.GetItems().Remove(item);
                     }

@@ -219,7 +219,7 @@ namespace EisenhowerMain
         {
             foreach (var quarter in matrix.GetQuarters())
             {
-                quarter.Value.GetItems().RemoveAll(item => item._isDone);
+                quarter.Value.GetItems().RemoveAll(item => item.Get_Status());
             }
         }
 
