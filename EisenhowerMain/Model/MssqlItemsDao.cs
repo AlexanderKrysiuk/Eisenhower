@@ -67,10 +67,12 @@ VALUES (@Title, @Deadline, @Importance);
         {
             try
             {
+                /*
                 if (overwrite)
                 {
                     todoMatrix.RemoveAll();
                 }
+                */
                 var todoItems = new List<TodoItem>();
 
                 using var connection = new SqlConnection(_connectionString);

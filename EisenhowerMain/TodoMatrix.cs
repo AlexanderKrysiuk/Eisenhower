@@ -175,7 +175,7 @@ namespace EisenhowerMain
                 }
                 foreach (TodoItem item in entry.Value.GetItems())
                 {
-                    itemsDao.Save(item.GetTitle(), item.GetDeadline(), importance, overwrite);
+                    itemsDao.Save(item.GetTitle(), item.GetDeadline(), importance);
                 }
             }
         }

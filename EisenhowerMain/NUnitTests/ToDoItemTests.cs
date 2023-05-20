@@ -13,7 +13,7 @@ public class ToDoItemTests
         TodoItem todoItem = new TodoItem(expectedTitle, DateTime.Now);
 
         //Act
-        string actualTitle = todoItem.Get_title();
+        string actualTitle = todoItem.GetTitle();
 
         //Assert
         Assert.That(actualTitle, Is.EqualTo(expectedTitle));
@@ -27,7 +27,7 @@ public class ToDoItemTests
         TodoItem todoItem = new TodoItem("2137", expectedDeadline);
 
         //Act
-        DateTime actualDeadline = todoItem.Get_deadline();
+        DateTime actualDeadline = todoItem.GetDeadline();
 
         //Assert
         Assert.That(actualDeadline, Is.EqualTo(expectedDeadline));
@@ -43,7 +43,7 @@ public class ToDoItemTests
         todoItem.Mark();
 
         //Assert
-        Assert.That(todoItem.Get_Status, Is.EqualTo(true));
+        Assert.That(todoItem.GetStatus, Is.EqualTo(true));
     }
 
     [Test]
@@ -56,7 +56,7 @@ public class ToDoItemTests
         todoItem.Unmark();
 
         //Assert
-        Assert.That(todoItem.Get_Status, Is.EqualTo(false));
+        Assert.That(todoItem.GetStatus, Is.EqualTo(false));
     }
 
     [Test]
