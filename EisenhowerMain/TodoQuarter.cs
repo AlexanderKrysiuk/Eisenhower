@@ -29,7 +29,7 @@ namespace EisenhowerMain
 
         public void ArchiveItems()
         {
-            ToDoItems.RemoveAll(item => item._isDone);
+            ToDoItems.RemoveAll(item => item.GetStatus());
         }
 
         public TodoItem GetItem(int index)
@@ -59,10 +59,10 @@ namespace EisenhowerMain
             string items = "";
             foreach (var item in GetItems())
             {
-                if (item.Get_Status() == false)
+                if (item.GetStatus() == false)
                 {
                     DateTime currentTime = DateTime.Now;
-                    TimeSpan difference = currentTime.Subtract(item.Get_deadline());
+                    TimeSpan difference = currentTime.Subtract(item.GetDeadline());
             
                     switch (difference.Days)
                     {

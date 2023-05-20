@@ -122,8 +122,8 @@ namespace EisenhowerMain
             foreach (var item in quarter.GetItems() )
             {
                 DateTime currentTime = DateTime.Now;
-                TimeSpan difference = currentTime.Subtract(item.Get_deadline());
-                if (item.Get_Status() == false)
+                TimeSpan difference = currentTime.Subtract(item.GetDeadline());
+                if (item.GetStatus() == false)
                 {
                     if (difference.Days > 3)
                     {
@@ -188,7 +188,7 @@ namespace EisenhowerMain
             {
                 foreach (var item in quarter.Value.GetItems())
                 {
-                    if (title == item.Get_title())
+                    if (title == item.GetTitle())
                     {
                         item.Mark();
                         display.Print("Marked item.");
@@ -205,7 +205,7 @@ namespace EisenhowerMain
             TodoQuarter quarter = matrix.GetQuarter(option);            
             display.Print("Please provide the number of the task to remove (starting from 1):");
             int index = Convert.ToInt32(getInput.GetInput()) - 1;
-            display.Print($"Are you sure you want to remove {quarter.GetItem(index).Get_title()} (y/n)?");
+            display.Print($"Are you sure you want to remove {quarter.GetItem(index).GetTitle()} (y/n)?");
             bool confirmation = GetYesOrNo();
             if (confirmation) {
                 quarter.GetItems().RemoveAt(index);
@@ -217,7 +217,7 @@ namespace EisenhowerMain
         {
             foreach (var quarter in matrix.GetQuarters())
             {
-                quarter.Value.GetItems().RemoveAll(item => item._isDone);
+                quarter.Value.GetItems().RemoveAll(item => item.GetStatus());
             }
         }
 
